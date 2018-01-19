@@ -38,7 +38,7 @@ public class MovieList extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         out.println("<HTML><HEAD><TITLE>MovieDB</TITLE></HEAD>");
-        out.println("<BODY><H1>MovieDB</H1>");
+        out.println("<BODY><H1>Top 20 Rated Movies</H1>");
 
         try {
             //Class.forName("org.gjt.mm.mysql.Driver");
@@ -48,28 +48,27 @@ public class MovieList extends HttpServlet {
             // Declare our statement
             Statement statement = dbcon.createStatement();
 
-            String query = "SELECT title, year, director, GROUP_CONCAT(DISTINCT g.name) AS genres, GROUP_CONCAT(DISTINCT s.name) AS stars, rating FROM ratings r, stars s, stars_in_movies t, genres g, genres_in_movies e, movies m INNER JOIN (SELECT a.movieId AS mid FROM ratings a JOIN movies AS o ON a.movieId = o.id ORDER BY a.rating DESC LIMIT 20) AS v ON v.mid = m.id WHERE r.movieId = m.id AND m.id = t.movieId AND t.starId = s.id AND m.id = e.movieId AND e.genreId = g.id GROUP BY m.id, r.rating ORDER BY r.rating DESC";
+            String query = "SELECT m.id as mID, title, year, director, GROUP_CONCAT(DISTINCT g.name) AS genres, GROUP_CONCAT(DISTINCT s.name) AS stars, rating FROM ratings r, stars s, stars_in_movies t, genres g, genres_in_movies e, movies m INNER JOIN (SELECT a.movieId AS mid FROM ratings a JOIN movies AS o ON a.movieId = o.id ORDER BY a.rating DESC LIMIT 20) AS v ON v.mid = m.id WHERE r.movieId = m.id AND m.id = t.movieId AND t.starId = s.id AND m.id = e.movieId AND e.genreId = g.id GROUP BY m.id, r.rating ORDER BY r.rating DESC";
 
             // Perform the query
             ResultSet rs = statement.executeQuery(query);
 
             out.println("<TABLE border>");
+            out.println("<tr>" + "<td>" + "Movie ID" + "</td>" + "<td>" + "Movie Title" + "</td>"
+            + "<td>" + "Movie Year" + "</td>" + "<td>" + "Movie Director" + "</td>"+
+            "<td>" + "List of Genres" + "</td>" + "<td>" + "List of Stars" + "</td>"+
+            "<td>" + "Rating" + "</td>" + "</tr>");
 
             // Iterate through each row of rs
             while (rs.next()) {
-                // String m_id = rs.getString("id");
-                // String m_name = rs.getString("first_name") + " " + rs.getString("last_name");
-                // String m_dob = rs.getString("dob");
-              String m_title = rs.getString("title");
-              String m_year = rs.getString("year");
-              String m_director = rs.getString("director");
-              String m_genres_list = rs.getString("genres");
-              String m_star_list = rs.getString("stars");
-              String m_rating = rs.getString("rating");
-                // out.println("<tr>" + "<td>" + m_id + "</td>" + "<td>" + m_name + "</td>" + "<td>" + m_dob + "</td>"
-                //         + "</tr>");
-              out.println("<tr>" + "<td>" + m_title + "</td>" + "<td>" + m_year + "</td>" + "<td>" + m_director + "</td>"
-                        + "<td>" + m_genres_list + "</td>" + "<td>" + m_star_list + "</td>" + "<td>" + m_rating + "</td>" + "</tr>");
+            	  String m_id = rs.getString("mID");
+			  String m_title = rs.getString("title");
+			  String m_year = rs.getString("year");
+			  String m_director = rs.getString("director");
+			  String m_genres_list = rs.getString("genres");
+			  String m_star_list = rs.getString("stars");
+			  String m_rating = rs.getString("rating");
+			  out.println("<tr>" + "<td>" + m_id + "</td>" + "<td>" + m_title + "</td>" + "<td>" + m_year + "</td>" + "<td>" + m_director + "</td>" + "<td>" + m_genres_list + "</td>" + "<td>" + m_star_list + "</td>" + "<td>" + m_rating + "</td>" + "</tr>");
             }
 
             out.println("</TABLE>");
