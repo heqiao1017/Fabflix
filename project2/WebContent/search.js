@@ -50,3 +50,16 @@ jQuery.ajax({
 	url: "/project2/Search",
 	success: (resultData) => handleSearchResult(resultData)
 });
+
+
+function empty() {
+    var title = document.getElementById("title").value;
+    var year = document.getElementById("year").value;
+    var director = document.getElementById("director").value;
+    var firstname = document.getElementById("firstname").value;
+    var lastname = document.getElementById("lastname").value;
+    if (title == "" && year == "" && director =="" && firstname=="" && lastname=="") {
+        alert("Invalid input, cannot be empty!");
+        return false;
+    };
+}
