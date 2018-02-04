@@ -1,5 +1,3 @@
-
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -74,7 +72,9 @@ public class Search extends HttpServlet {
         			query += "AND year LIKE \"%"+ year + "%\" ";
             }
             if (!director.equals("")) {
-        			query += "AND director LIKE \"%"+ director + "%\" ";
+            		director = director.replace("+", " ");
+            		System.out.println(director);
+        			query += "AND director LIKE \"%"+ director+ "%\" ";
 	        }
 	        if (!firstName.equals("") && !lastName.equals("")) {
 	        		query += "AND s.name LIKE \"%"+ firstName + " " + lastName + "%\" ";
