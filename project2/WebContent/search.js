@@ -5,40 +5,40 @@ function handleSearchResult(resultDataString) {
 	console.log("handle search response");
 	console.log(resultDataJson);
 	//will always direct to movieList.html page, but can be "No Result Found" or movie list
-	window.location.replace("/project2/movieList.html");
+//	window.location.replace("/project2/movielist.html");
 	var movieTableBodyElement = jQuery("#movie_table_body");
-	for (var i = 0; i < resultData.length; i++) {
+	for (var i = 0; i < resultDataJson.length; i++) {
 		var rowHTML = "";
 		rowHTML += "<tr>";
-		rowHTML += "<th>" + resultData[i]["movie_id"] + "</th>";
-		rowHTML += "<th>" + resultData[i]["movie_title"] + "</th>";
-		rowHTML += "<th>" + resultData[i]["movie_year"] + "</th>";
-		rowHTML += "<th>" + resultData[i]["movie_director"] + "</th>";
-		rowHTML += "<th>" + resultData[i]["movie_genres"] + "</th>";
-		rowHTML += "<th>" + resultData[i]["movie_stars"] + "</th>";
+		rowHTML += "<th>" + resultDataJson[i]["movie_id"] + "</th>";
+		rowHTML += "<th>" + resultDataJson[i]["movie_title"] + "</th>";
+		rowHTML += "<th>" + resultDataJson[i]["movie_year"] + "</th>";
+		rowHTML += "<th>" + resultDataJson[i]["movie_director"] + "</th>";
+		rowHTML += "<th>" + resultDataJson[i]["movie_genres"] + "</th>";
+		rowHTML += "<th>" + resultDataJson[i]["movie_stars"] + "</th>";
 		rowHTML += "</tr>"
 		movieTableBodyElement.append(rowHTML);
 	}
 }
 
+function getQueryString() {
+	  var result = {}, queryString = location.search.slice(1),
+	      re = /([^&=]+)=([^&]*)/g, m;
 
-function submitSearchForm(formSubmitEvent) {
-	console.log("submit search form");
-	
-	// important: disable the default action of submitting the form
-	//   which will cause the page to refresh
-	//   see jQuery reference for details: https://api.jquery.com/submit/
-	formSubmitEvent.preventDefault();
-		
-	jQuery.post(
-		"/project2/Search", 
-		// serialize the login form to the data sent by POST request
-		jQuery("#search_form").serialize(),
-		(resultDataString) => handleSearchResult(resultDataString)
-	);
+	  while (m = re.exec(queryString)) {
+	    result[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+	  }
 
-}
+	  return result;
+	}
+//
+//var myParam = getQueryString()["title"];
+//console.log(myParam);
 
-// bind the submit action of the form to a handler function
-jQuery("#search_form").submit((event) => submitSearchForm(event));
-
+jQuery.ajax({
+	data: getQueryString(),
+	dataType: "json",
+	method: "GET",
+	url: "/project2/Search",
+	success: (resultData) => handleSearchResult(resultData)
+});

@@ -41,7 +41,7 @@ public class Search extends HttpServlet {
 		String director = request.getParameter("director");
 		String firstName = request.getParameter("firstName");
 		String lastName = request.getParameter("lastName");
-
+	
 		String loginUser = "qiaoh3";
         String loginPasswd = "zj@38971";
         String loginUrl = "jdbc:mysql://localhost:3306/moviedb?useSSL=false";
@@ -58,17 +58,37 @@ public class Search extends HttpServlet {
             
             // Declare our statement
             Statement statement = dbcon.createStatement();
-            
             String query = "SELECT m.id as ID, title, year, director, "
             		+ "GROUP_CONCAT(DISTINCT g.name) AS genres, GROUP_CONCAT(DISTINCT s.name) AS stars "
             		+ "FROM stars s, stars_in_movies t, genres g, genres_in_movies e, movies m "
-            		+ "WHERE m.id = t.movieId AND t.starId = s.id AND m.id = e.movieId AND e.genreId = g.id "
-            		+ "AND title LIKE \"%"+ title + "%\" " + "AND year LIKE \"%"+ year + "%\" " 
-            		+ "AND director LIKE \"%"+ director + "%\" "
-            		+ "AND name LIKE \"%"+ firstName + " " + lastName + "%\" "
-            		+ "GROUP BY m.id";
+            		+ "WHERE m.id = t.movieId AND t.starId = s.id AND m.id = e.movieId AND e.genreId = g.id ";
+//            		+ "AND title LIKE \"%"+ title + "%\" " + "GROUP BY m.id"
+//            		+ "AND year LIKE \"%"+ year + "%\" " 
+//            		+ "AND director LIKE \"%"+ director + "%\" "
+//            		+ "AND name LIKE \"%"+ firstName + " " + lastName + "%\" "
+//            		+ "GROUP BY m.id";
+            if (!title.equals("")) {
+            		query += "AND title LIKE \"%"+ title + "%\" ";
+            }
+            if (!year.equals("")) {
+        			query += "AND year LIKE \"%"+ year + "%\" ";
+            }
+            if (!director.equals("")) {
+        			query += "AND director LIKE \"%"+ director + "%\" ";
+	        }
+	        if (!firstName.equals("") && !lastName.equals("")) {
+	        		query += "AND s.name LIKE \"%"+ firstName + " " + lastName + "%\" ";
+	        }
+	        else if (!firstName.equals("")) {
+	        		query += "AND s.name LIKE \"%"+ firstName +"%\" ";
+	        }
+	        else if (!lastName.equals("")){
+        			query += "AND s.name LIKE \"%"+ lastName +"%\" ";
+	        }
+	        query += "GROUP BY m.id";
+	        
+	        System.out.println(query);
             
-//            System.out.println(query);
             // Perform the query
             ResultSet rs = statement.executeQuery(query);
             
