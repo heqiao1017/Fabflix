@@ -5,20 +5,28 @@ function handleSearchResult(resultDataString) {
 	console.log("handle search response");
 	console.log(resultDataJson);
 	//will always direct to movieList.html page, but can be "No Result Found" or movie list
-//	window.location.replace("/project2/movielist.html");
 	var movieTableBodyElement = jQuery("#movie_table_body");
-	for (var i = 0; i < resultDataJson.length; i++) {
-		var rowHTML = "";
-		rowHTML += "<tr>";
-		rowHTML += "<th>" + resultDataJson[i]["movie_id"] + "</th>";
-		rowHTML += "<th>" + resultDataJson[i]["movie_title"] + "</th>";
-		rowHTML += "<th>" + resultDataJson[i]["movie_year"] + "</th>";
-		rowHTML += "<th>" + resultDataJson[i]["movie_director"] + "</th>";
-		rowHTML += "<th>" + resultDataJson[i]["movie_genres"] + "</th>";
-		rowHTML += "<th>" + resultDataJson[i]["movie_stars"] + "</th>";
-		rowHTML += "</tr>"
+	if (jQuery.isEmptyObject(resultDataJson)) {
+		var rowHTML = "<tr><td><h2>No Result Found</h2></td></tr>";
 		movieTableBodyElement.append(rowHTML);
 	}
+	else {
+		var rowHTML = "<tr><th>ID</th><th>Title</th><th>Year</th><th>Director</th><th>Genres</th><th>Stars</th></tr>";
+		movieTableBodyElement.append(rowHTML);
+		for (var i = 0; i < resultDataJson.length; i++) {
+			var rowHTML = "";
+			rowHTML += "<tr>";
+			rowHTML += "<th>" + resultDataJson[i]["movie_id"] + "</th>";
+			rowHTML += "<th>" + resultDataJson[i]["movie_title"] + "</th>";
+			rowHTML += "<th>" + resultDataJson[i]["movie_year"] + "</th>";
+			rowHTML += "<th>" + resultDataJson[i]["movie_director"] + "</th>";
+			rowHTML += "<th>" + resultDataJson[i]["movie_genres"] + "</th>";
+			rowHTML += "<th>" + resultDataJson[i]["movie_stars"] + "</th>";
+			rowHTML += "</tr>"
+			movieTableBodyElement.append(rowHTML);
+		}
+	}
+	
 }
 
 function getQueryString() {

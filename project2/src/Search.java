@@ -87,6 +87,9 @@ public class Search extends HttpServlet {
 	        }
 	        query += "GROUP BY m.id";
 	        
+//	        if (title.equals("") && year.equals("") && director.equals("") && firstName.equals("") && lastName.equals("")) {
+//	        		query = 
+//	        }
 	        System.out.println(query);
             
             // Perform the query
