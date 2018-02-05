@@ -6,13 +6,14 @@ function handleSearchResult(resultDataString) {
 	console.log(resultDataJson);
 	//will always direct to movieList.html page, but can be "No Result Found" or movie list
 	var movieTableBodyElement = jQuery("#movie_table_body");
+	var movieTableHeadElement = jQuery("#movie_head");
 	if (jQuery.isEmptyObject(resultDataJson)) {
 		var rowHTML = "<tr><td><h2>No Result Found</h2></td></tr>";
-		movieTableBodyElement.append(rowHTML);
+		movieTableHeadElement.append(rowHTML);
 	}
 	else {
-		var rowHTML = "<tr><th>ID</th><th>Title</th><th>Year</th><th>Director</th><th>Genres</th><th>Stars</th></tr>";
-		movieTableBodyElement.append(rowHTML);
+		var rowHTML = "<tr><th>ID</th><th onclick=\"sortTable(1)\"><a href=\"#\">Title</a></th><th onclick=\"sortTable(2)\"><a href=\"#\">Year</a></th><th>Director</th><th>Genres</th><th>Stars</th></tr>";
+		movieTableHeadElement.append(rowHTML);
 		for (var i = 0; i < resultDataJson.length; i++) {
 			var rowHTML = "";
 			rowHTML += "<tr>";
@@ -63,3 +64,5 @@ function empty() {
         return false;
     };
 }
+
+
