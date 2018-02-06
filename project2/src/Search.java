@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -66,14 +67,16 @@ public class Search extends HttpServlet {
 //            		+ "AND name LIKE \"%"+ firstName + " " + lastName + "%\" "
 //            		+ "GROUP BY m.id";
             if (!title.equals("")) {
+            		title = title.replaceAll(Pattern.quote("+"), " ");
+//            		System.out.println(title);
             		query += "AND title LIKE \"%"+ title + "%\" ";
             }
             if (!year.equals("")) {
         			query += "AND year LIKE \"%"+ year + "%\" ";
             }
             if (!director.equals("")) {
-            		director = director.replace("+", " ");
-            		System.out.println(director);
+            		director = director.replaceAll(Pattern.quote("+"), " ");
+//            		System.out.println(director);
         			query += "AND director LIKE \"%"+ director+ "%\" ";
 	        }
 	        if (!firstName.equals("") && !lastName.equals("")) {

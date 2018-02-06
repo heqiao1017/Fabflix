@@ -17,9 +17,9 @@
 	<h1>Search Result:</h1>
 	
 	 <div class="dropdown">
-		<a id="prev" class="pagination-page" href="#" onclick="MyFunction();" style="color:#000">Prev</a>
-		<a id="next" class="pagination-page" href="#" onclick="MyFunction();" style="color:#000">Next</a>
-	  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">N<span class="caret pagination-page""></span></button>
+		<a id="prev" href="#" onclick="MyFunction();" >Prev</a>
+		<a id="next" href="#" onclick="MyFunction();" >Next</a>
+	  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">N<span class="caret""></span></button>
 	  <ul class="dropdown-menu">
 	    <li><a href="#">10</a></li>
 	    <li><a href="#">25</a></li>
@@ -33,7 +33,6 @@
 		<thead id = "movie_head"></thead>
 		<tbody id="movie_table_body"></tbody>
 	</table>
-	<div class="pagination-page"> </div> <span class="pagination-info"></span>
 	
 
 	<!-- include jQuery and Bootstrap JS -->
@@ -47,8 +46,9 @@
 	<script src="https://cdn.datatables.net/plug-ins/1.10.7/pagination/select.js"></script>
 	
 	<!-- include our own JS file -->
-	<script src="./movieList.js"></script>
+<!-- 	<script src="./movieList.js"></script> -->
 	<script src="./search.js"></script>
+	<script src="./singlemovie.js"></script>
 	
 </body>
 

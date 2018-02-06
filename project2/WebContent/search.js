@@ -1,3 +1,9 @@
+function splitListItems(listItems) {
+	console.log(listItems)
+	var array = listItems.split(',');
+	return array;
+}
+
 function handleSearchResult(resultDataString) {
 	console.log(resultDataString);
 	resultDataJson = JSON.parse(JSON.stringify(resultDataString));
@@ -18,38 +24,41 @@ function handleSearchResult(resultDataString) {
 			var rowHTML = "";
 			rowHTML += "<tr>";
 			rowHTML += "<th>" + resultDataJson[i]["movie_id"] + "</th>";
-			rowHTML += "<th>" + resultDataJson[i]["movie_title"] + "</th>";
+			rowHTML += "<th><form id=\"title_form"+i+"\" action=\"/project2/singlemovie.html\" method=\"get\"><input type=\"hidden\" value=\""+resultDataJson[i]["movie_title"]+"\" name=\"title\"><a href=\"#\" onclick=\"document.getElementById('title_form"+i+"').submit();\" id = \"title_achor\">"+resultDataJson[i]["movie_title"]+"</a></form></th>";
 			rowHTML += "<th>" + resultDataJson[i]["movie_year"] + "</th>";
 			rowHTML += "<th>" + resultDataJson[i]["movie_director"] + "</th>";
 			rowHTML += "<th>" + resultDataJson[i]["movie_genres"] + "</th>";
-			rowHTML += "<th>" + resultDataJson[i]["movie_stars"] + "</th>";
+			rowHTML += "<th>";
+			var star_arr = splitListItems(resultDataJson[i]["movie_stars"]);
+			for (var j = 0; j < star_arr.length; j++) {
+				rowHTML += "<form id='star_form"+j+"' action=\"/project2/singlestar.html\" method=\"get\"><input type=\"hidden\" value=\""+star_arr[j]+"\" name=\"star\"><a href=\"#\" onclick=\"document.getElementById('star_form"+j+"').submit();\">"+star_arr[j]+"</a></form>"
+			}
+			rowHTML += "</th>";
+
+//			rowHTML += "<th>" + resultDataJson[i]["movie_stars"] + "</th>";
 			rowHTML += "</tr>"
 			movieTableBodyElement.append(rowHTML);
 		}
 	}
-	
+
 }
 
 function getQueryString() {
-	  var result = {}, queryString = location.search.slice(1),
-	      re = /([^&=]+)=([^&]*)/g, m;
-
-	  while (m = re.exec(queryString)) {
-	    result[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
-	  }
-
-	  return result;
+	var result = {}, queryString = location.search.slice(1), re = /([^&=]+)=([^&]*)/g, m;
+	
+	while (m = re.exec(queryString)) {
+		result[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
 	}
-//
-//var myParam = getQueryString()["title"];
-//console.log(myParam);
+	return result;
+}
+
 
 jQuery.ajax({
-	data: getQueryString(),
-	dataType: "json",
-	method: "GET",
-	url: "/project2/Search",
-	success: (resultData) => handleSearchResult(resultData)
+	  data: getQueryString(),
+	  dataType: "json",
+	  method: "GET",
+	  url: "/project2/Search",
+	  success: (resultData) => handleSearchResult(resultData)
 });
 
 
@@ -65,4 +74,79 @@ function empty() {
     };
 }
 
+function sortTable(n) {
+	  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+	  table = document.getElementById("movie_table");
+	  switching = true;
+	  //Set the sorting direction to ascending:
+	  dir = "asc"; 
+	  /*Make a loop that will continue until
+	  no switching has been done:*/
+	  while (switching) {
+	    //start by saying: no switching is done:
+	    switching = false;
+	    rows = table.getElementsByTagName("TR");
+	    /*Loop through all table rows (except the
+	    first, which contains table headers):*/
+	    for (i = 1; i < (rows.length - 1); i++) {
+	      //start by saying there should be no switching:
+	      shouldSwitch = false;
+	      /*Get the two elements you want to compare,
+	      one from current row and one from the next:*/
+	      x = rows[i].getElementsByTagName("TH")[n];
+	      y = rows[i + 1].getElementsByTagName("TH")[n];
+	      /*check if the two rows should switch place,
+	      based on the direction, asc or desc:*/
+	      if (dir == "asc") {
+	        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+	          //if so, mark as a switch and break the loop:
+	          shouldSwitch= true;
+	          break;
+	        }
+	      } else if (dir == "desc") {
+	        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+	          //if so, mark as a switch and break the loop:
+	          shouldSwitch= true;
+	          break;
+	        }
+	      }
+	    }
+	    if (shouldSwitch) {
+	      /*If a switch has been marked, make the switch
+	      and mark that a switch has been done:*/
+	      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+	      switching = true;
+	      //Each time a switch is done, increase this count by 1:
+	      switchcount ++;      
+	    } else {
+	      /*If no switching has been done AND the direction is "asc",
+	      set the direction to "desc" and run the while loop again.*/
+	      if (switchcount == 0 && dir == "asc") {
+	        dir = "desc";
+	        switching = true;
+	      }
+	    }
+	  }
+}
 
+
+
+
+//function submitSearchForm(formSubmitEvent) {
+//console.log("submit search form");
+//console.log(getQueryString());
+//// important: disable the default action of submitting the form
+////   which will cause the page to refresh
+////   see jQuery reference for details: https://api.jquery.com/submit/
+////formSubmitEvent.preventDefault();
+//jQuery.ajax({
+//    	data: getQueryString(),
+//    	dataType: "json",
+//    	method: "GET",
+//    	url: "/project2/Search",
+//    	success: (resultData) => handleSearchResult(resultData)
+//});
+//}
+
+//bind the submit action of the form to a handler function
+//jQuery("#search_form").submit((event) => submitSearchForm(event));
