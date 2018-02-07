@@ -34,18 +34,10 @@ function handleSearchResult(resultDataString) {
 				rowHTML += "<form id='star_form"+j+"' action=\"/project2/singlestar.html\" method=\"get\"><input type=\"hidden\" value=\""+star_arr[j]+"\" name=\"star\"><a href=\"#\" onclick=\"document.getElementById('star_form"+j+"').submit();\">"+star_arr[j]+"</a></form>"
 			}
 			rowHTML += "</th>";
-
-//			rowHTML += "<th>" + resultDataJson[i]["movie_stars"] + "</th>";
 			rowHTML += "</tr>"
 			movieTableBodyElement.append(rowHTML);
 		}
 	}
-	//window.location.replace("/project2/movielist.html");
-//	$("#movie_head").html(movieTableHeadElement);
-//	$("#movie_table_body").html(movieTableBodyElement);
-//	document.getElementById("#movie_head").innerHTML = movieTableHeadElement;
-//	document.getElementById("#movie_table_body").innerHTML = movieTableBodyElement;
-	
 }
 
 function getQueryString() {

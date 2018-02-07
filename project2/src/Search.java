@@ -41,7 +41,8 @@ public class Search extends HttpServlet {
 		String firstName = request.getParameter("firstName");
 		String lastName = request.getParameter("lastName");
 		
-		//String genre = request.getParameter("genre");//new added
+		String genre = request.getParameter("genre");//new added
+		String titleFirstChar = request.getParameter("titleFirstChar");//new added
         
 	
 		String loginUser = "mytestuser";
@@ -70,28 +71,37 @@ public class Search extends HttpServlet {
 //	            System.out.println("genre in single movie java: "+ genre);
 //	            query += "AND g.name='"+ genre + "' ";
 //            }
-            if (!title.equals("")) {
-            		title = title.replaceAll(Pattern.quote("+"), " ");
-//            		System.out.println(title);
-            		query += "AND title LIKE \"%"+ title + "%\" ";
+            if (genre!=null) {
+        			query += "and g.name='"+genre+"' ";
             }
-            if (!year.equals("")) {
-        			query += "AND year LIKE \"%"+ year + "%\" ";
+            else if (titleFirstChar != null) {
+	        		query += "and title like '"+titleFirstChar+"%' ";
             }
-            if (!director.equals("")) {
-            		director = director.replaceAll(Pattern.quote("+"), " ");
-//            		System.out.println(director);
-        			query += "AND director LIKE \"%"+ director+ "%\" ";
-	        }
-	        if (!firstName.equals("") && !lastName.equals("")) {
-	        		query += "AND s.name LIKE \"%"+ firstName + " " + lastName + "%\" ";
-	        }
-	        else if (!firstName.equals("")) {
-	        		query += "AND s.name LIKE \"%"+ firstName +"%\" ";
-	        }
-	        else if (!lastName.equals("")){
-        			query += "AND s.name LIKE \"%"+ lastName +"%\" ";
-	        }
+            else {
+                if (!title.equals("")) {
+                    title = title.replaceAll(Pattern.quote("+"), " ");
+//                  System.out.println(title);
+                    query += "and title LIKE \"%"+ title + "%\" ";
+                }
+                if (!year.equals("")) {
+                        query += "and year LIKE \"%"+ year + "%\" ";
+                }
+                if (!director.equals("")) {
+                        director = director.replaceAll(Pattern.quote("+"), " ");
+    //                  System.out.println(director);
+                        query += "and director LIKE \"%"+ director+ "%\" ";
+                }
+                if (!firstName.equals("") && !lastName.equals("")) {
+                        query += "and s.name LIKE \"%"+ firstName + " " + lastName + "%\" ";
+                }
+                else if (!firstName.equals("")) {
+                        query += "and s.name LIKE \"%"+ firstName +"%\" ";
+                }
+                else if (!lastName.equals("")){
+                        query += "and s.name LIKE \"%"+ lastName +"%\" ";
+                }
+            }
+            
 	        query += "GROUP BY m.id";
 	        
 
