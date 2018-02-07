@@ -23,7 +23,7 @@ function handleMovieResult(resultDataString) {
 	rowHTML += "<th>";
 	var genre_arr = splitListItems(resultDataJson[0]["movie_genres"]);
 	for (var j = 0; j < genre_arr.length; j++) {
-		rowHTML += "<form id='genre_form"+j+"' action=\"#\" method=\"get\"><input type=\"hidden\" value=\""+genre_arr[j]+"\" name=\"genre\"><a href=\"#\" onclick=\"document.getElementById('genre_form"+j+"').submit();\">"+genre_arr[j]+"</a></form>"
+		rowHTML += "<form id='genre_form"+j+"' action=\"/project2/movielist.html\" method=\"get\"><input type=\"hidden\" value=\""+genre_arr[j]+"\" name=\"genre\"><a href=\"#\" onclick=\"document.getElementById('genre_form"+j+"').submit();\">"+genre_arr[j]+"</a></form>"
 	}
 	rowHTML += "</th></tr>";
 	
@@ -58,23 +58,4 @@ jQuery.ajax({
 	url: "/project2/singleMovie",
 	success: (resultData) => handleMovieResult(resultData)
 });
-
-
-//console.log( $('input[id="title_value"]').val());
-//function getQueryObject() {
-//	return {"title":$("#title_value").val()};
-//}
-
-//$(document).ready(function(){
-////	var myParam = getQueryString()["title"];
-////	console.log(getQueryString());
-//	jQuery.ajax({
-//		data: getQueryString(),
-//		dataType: "json",
-//		method: "GET",
-//		url: "/project2/singleMovie",
-//		success: (resultData) => handleMovieResult(resultData)
-//	});
-//});
-
 	

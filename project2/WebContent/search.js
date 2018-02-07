@@ -40,7 +40,12 @@ function handleSearchResult(resultDataString) {
 			movieTableBodyElement.append(rowHTML);
 		}
 	}
-
+	//window.location.replace("/project2/movielist.html");
+//	$("#movie_head").html(movieTableHeadElement);
+//	$("#movie_table_body").html(movieTableBodyElement);
+//	document.getElementById("#movie_head").innerHTML = movieTableHeadElement;
+//	document.getElementById("#movie_table_body").innerHTML = movieTableBodyElement;
+	
 }
 
 function getQueryString() {
@@ -51,15 +56,6 @@ function getQueryString() {
 	}
 	return result;
 }
-
-
-jQuery.ajax({
-	  data: getQueryString(),
-	  dataType: "json",
-	  method: "GET",
-	  url: "/project2/Search",
-	  success: (resultData) => handleSearchResult(resultData)
-});
 
 
 function empty() {
@@ -130,23 +126,10 @@ function sortTable(n) {
 }
 
 
-
-
-//function submitSearchForm(formSubmitEvent) {
-//console.log("submit search form");
-//console.log(getQueryString());
-//// important: disable the default action of submitting the form
-////   which will cause the page to refresh
-////   see jQuery reference for details: https://api.jquery.com/submit/
-////formSubmitEvent.preventDefault();
-//jQuery.ajax({
-//    	data: getQueryString(),
-//    	dataType: "json",
-//    	method: "GET",
-//    	url: "/project2/Search",
-//    	success: (resultData) => handleSearchResult(resultData)
-//});
-//}
-
-//bind the submit action of the form to a handler function
-//jQuery("#search_form").submit((event) => submitSearchForm(event));
+jQuery.ajax({
+	  data: getQueryString(),
+	  dataType: "json",
+	  method: "GET",
+	  url: "/project2/Search",
+	  success: (resultData) => handleSearchResult(resultData)
+});

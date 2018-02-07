@@ -1,0 +1,9 @@
+$("#search").click(function(){
+	window.location.href='./search.html';
+});
+$("#browsebygenre").click(function(){
+	window.location.href='./browsebygenre.html';
+});
+$("#browsebytitle").click(function(){
+	window.location.href='./browsebytitle.html';
+});

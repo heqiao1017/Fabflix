@@ -1,3 +1,5 @@
+
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -17,16 +19,16 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 /**
- * Servlet implementation class Search
+ * Servlet implementation class singleMovie
  */
-@WebServlet("/Search")
-public class Search extends HttpServlet {
+@WebServlet("/singleMovie")
+public class singleMovie extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Search() {
+    public singleMovie() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -35,24 +37,28 @@ public class Search extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String title = request.getParameter("title");
-		String year = request.getParameter("year");
-		String director = request.getParameter("director");
-		String firstName = request.getParameter("firstName");
-		String lastName = request.getParameter("lastName");
-		
-		//String genre = request.getParameter("genre");//new added
-        
-	
 		String loginUser = "mytestuser";
         String loginPasswd = "mypassword";
         String loginUrl = "jdbc:mysql://localhost:3306/moviedb?useSSL=false";
-
+        String title = request.getParameter("title");
+        title = title.replaceAll(Pattern.quote("+"), " ");
+        System.out.println("title in single movie: "+ title);
+        
+        //new added
+//        if (title != null) {
+//          title = title.replaceAll(Pattern.quote("+"), " ");
+//          System.out.println("title in single movie: "+ title);
+//        }
+//        String genre = request.getParameter("genre");//new added
+//        if (genre != null) {
+//        		genre = genre.replaceAll(Pattern.quote("+"), " ");
+//            System.out.println("genre in single movie java: "+ genre);
+//         }
+        
         response.setContentType("application/json");
 
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
-
         try {
             Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
             Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
@@ -63,39 +69,24 @@ public class Search extends HttpServlet {
             String query = "SELECT m.id as ID, title, year, director, "
             		+ "GROUP_CONCAT(DISTINCT g.name) AS genres, GROUP_CONCAT(DISTINCT s.name) AS stars "
             		+ "FROM stars s, stars_in_movies t, genres g, genres_in_movies e, movies m "
-            		+ "WHERE m.id = t.movieId AND t.starId = s.id AND m.id = e.movieId AND e.genreId = g.id ";
+            		+ "WHERE m.id = t.movieId AND t.starId = s.id AND m.id = e.movieId AND e.genreId = g.id AND "
+            		+"title=\"" + title+"\" ";
             
-//            if (genre != null) {
-//	        		genre = genre.replaceAll(Pattern.quote("+"), " ");
-//	            System.out.println("genre in single movie java: "+ genre);
-//	            query += "AND g.name='"+ genre + "' ";
+            	//new added
+//            String query = "SELECT m.id as ID, title, year, director, "
+//            		+ "GROUP_CONCAT(DISTINCT g.name) AS genres, GROUP_CONCAT(DISTINCT s.name) AS stars "
+//            		+ "FROM stars s, stars_in_movies t, genres g, genres_in_movies e, movies m "
+//            		+ "WHERE m.id = t.movieId AND t.starId = s.id AND m.id = e.movieId AND e.genreId = g.id AND ";
+//
+//            if (title != null) {
+//	        		query += "title='"+ title + "' ";
 //            }
-            if (!title.equals("")) {
-            		title = title.replaceAll(Pattern.quote("+"), " ");
-//            		System.out.println(title);
-            		query += "AND title LIKE \"%"+ title + "%\" ";
-            }
-            if (!year.equals("")) {
-        			query += "AND year LIKE \"%"+ year + "%\" ";
-            }
-            if (!director.equals("")) {
-            		director = director.replaceAll(Pattern.quote("+"), " ");
-//            		System.out.println(director);
-        			query += "AND director LIKE \"%"+ director+ "%\" ";
-	        }
-	        if (!firstName.equals("") && !lastName.equals("")) {
-	        		query += "AND s.name LIKE \"%"+ firstName + " " + lastName + "%\" ";
-	        }
-	        else if (!firstName.equals("")) {
-	        		query += "AND s.name LIKE \"%"+ firstName +"%\" ";
-	        }
-	        else if (!lastName.equals("")){
-        			query += "AND s.name LIKE \"%"+ lastName +"%\" ";
-	        }
-	        query += "GROUP BY m.id";
-	        
-
-	        System.out.println(query);
+//            if (genre != null) {
+//            		query += "g.name='"+ genre + "' ";
+//            }
+            
+            query += "GROUP BY m.id";
+            System.out.println(query);
             
             // Perform the query
             ResultSet rs = statement.executeQuery(query);
@@ -121,8 +112,7 @@ public class Search extends HttpServlet {
             rs.close();
             statement.close();
             dbcon.close();
-            
-        } catch (SQLException ex) {
+        }catch (SQLException ex) {
             while (ex != null) {
                 System.out.println("SQL Exception:  " + ex.getMessage());
                 ex = ex.getNextException();
