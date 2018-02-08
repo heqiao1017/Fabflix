@@ -1,7 +1,3 @@
-/**
- * 
- */
-
 function handleLoginResult(resultDataString) {
 	console.log(resultDataString);
 	resultDataJson = JSON.parse(JSON.stringify(resultDataString));
@@ -40,3 +36,11 @@ function submitLoginForm(formSubmitEvent) {
 // bind the submit action of the form to a handler function
 jQuery("#login_form").submit((event) => submitLoginForm(event));
 
+
+
+//jQuery.ajax({
+//	  data: getQueryString(),
+//	  dataType: "json",
+//	  method: "GET",
+//	  url: "/project2/Login"
+//});
