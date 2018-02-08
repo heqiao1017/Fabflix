@@ -17,17 +17,22 @@
 	<h1>Search Result:</h1>
 	
 	 <div class="dropdown">
-		<a id="prev" href="#" onclick="MyFunction();" >Prev</a>
-		<a id="next" href="#" onclick="MyFunction();" >Next</a>
-	  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">N<span class="caret""></span></button>
+		<a id="prev" href="#" onclick="prevPage()" >Prev</a>
+		<a id="next" href="#" onclick="nextPage();" >Next</a>
+<!-- 	  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">N<span class="caret""></span></button>
 	  <ul class="dropdown-menu">
 	    <li><a href="#">10</a></li>
 	    <li><a href="#">25</a></li>
 	    <li><a href="#">50</a></li>
 	    <li><a href="#">100</a></li>
-	  </ul>
+	  </ul> -->
+        <select id="search-count" name="count" onchange="showPage(value);">
+        	  <option value="10">10 per page</option>
+          <option value="25">25 per page</option>
+          <option value="50">50 per page</option>
+          <option value="100">100 per page</option>
+        </select>
 	</div>
-	
 	
 	<table id="movie_table" class="table table-striped" >
 		<thead id = "movie_head"></thead>
