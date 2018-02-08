@@ -1,7 +1,6 @@
 /**
  * 
  */
-
 function handleLoginResult(resultDataString) {
 	console.log(resultDataString);
 	resultDataJson = JSON.parse(JSON.stringify(resultDataString));
