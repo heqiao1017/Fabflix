@@ -17,24 +17,27 @@
 	<h1>Search Result:</h1>
 	
 	 <div class="dropdown">
-		<a id="prev" href="#" onclick="MyFunction();" >Prev</a>
-		<a id="next" href="#" onclick="MyFunction();" >Next</a>
-	  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">N<span class="caret""></span></button>
-	  <ul class="dropdown-menu">
-	    <li><a href="#">10</a></li>
-	    <li><a href="#">25</a></li>
-	    <li><a href="#">50</a></li>
-	    <li><a href="#">100</a></li>
-	  </ul>
+		<a id="prev" href="#" onclick="prevPage()" >Prev</a>
+		<a id="next" href="#" onclick="nextPage();" >Next</a>
+		
+        <select id="search-count" name="count" onchange="showPage(value);">
+        	  <option value="10">10 per page</option>
+          <option value="25">25 per page</option>
+          <option value="50">50 per page</option>
+          <option value="100">100 per page</option>
+        </select>
+        
+        	<button type="button" id='back_to_mainPage' onclick="window.location.href='./index.html'">Main Page</button>
+   		<button type="button" id='logout' onclick="window.location.href='./login.html'">Logout</button>
 	</div>
 	
 	<form action="/project2/shoppingcart.html" method='get'><input type ="submit" value="Checkout"></form>
-	
+
 	<table id="movie_table" class="table table-striped" >
 		<thead id = "movie_head"></thead>
 		<tbody id="movie_table_body"></tbody>
 	</table>
-	
+
 
 	<!-- include jQuery and Bootstrap JS -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
