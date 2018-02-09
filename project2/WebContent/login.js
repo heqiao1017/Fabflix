@@ -1,6 +1,3 @@
-/**
- * 
- */
 function handleLoginResult(resultDataString) {
 	console.log(resultDataString);
 	resultDataJson = JSON.parse(JSON.stringify(resultDataString));
@@ -38,4 +35,3 @@ function submitLoginForm(formSubmitEvent) {
 
 // bind the submit action of the form to a handler function
 jQuery("#login_form").submit((event) => submitLoginForm(event));
-

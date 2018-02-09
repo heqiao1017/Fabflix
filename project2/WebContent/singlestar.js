@@ -12,7 +12,10 @@ function handleStarResult(resultDataString) {
 	rowHTML += "<tr><th>Name:</th>";
 	rowHTML += "<th>" + resultDataJson[0]["star_name"] + "</th></tr>";
 	rowHTML += "<tr><th>BirthYear:</th>";
-	rowHTML += "<th>" + resultDataJson[0]["star_birth"] + "</th></tr>";
+	if (resultDataJson[0]["star_birth"]!=null) {
+		rowHTML += "<th>" + resultDataJson[0]["star_birth"] + "</th></tr>";
+	}
+//	rowHTML += "<th>" + resultDataJson[0]["star_birth"] + "</th></tr>";
 	rowHTML += "<tr><th style='vertical-align: top;'>Movies:</th>";
 //	rowHTML += "<th>" + resultDataJson["movie_title"] + "</th></tr>";
 	rowHTML += "<th>";

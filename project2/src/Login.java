@@ -38,10 +38,18 @@ public class Login extends HttpServlet {
 
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
+		
+//		String logout = request.getParameter("logout");
+//		if (logout != null && request.getSession().getAttribute("user") != null) {
+//			System.out.println("logout != null && request.getSession().getAttribute(\"user\") != null");
+//			request.getSession().removeAttribute("user");
+//			return;
+//		}
 
 		String loginUser = "mytestuser";
         String loginPasswd = "mypassword";
         String loginUrl = "jdbc:mysql://localhost:3306/moviedb?useSSL=false";
+        
 
         response.setContentType("application/json");
 

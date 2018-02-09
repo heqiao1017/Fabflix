@@ -3,31 +3,50 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Login to Fablix</title>
-<!-- 	<link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
- --><link href="https://fonts.googleapis.com/css?family=Abril+Fatface" rel="stylesheet">
+<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="login.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
 </head>
 <body>
-	<h2 class="login-title">Login to Fablix</h2>
-	<!-- Set the method to POST to avoid username/password showing on URL
-		 Disable the default action because our JS function will handle it. -->
-	<form id="login_form" method="post" action="#">
-	    <label><b>Username</b></label>
-	    <input type="text" placeholder="Enter Username" name="username">
-		<br>
-	    <label><b>Password</b></label>
-	    <input type="password" placeholder="Enter Password" name="password">
-		<br>
-	    <input type="submit" value="Login">
-	</form>
+	<div id="faux-footer" style="height: 262px;">
+		<div class="second feed span4" style="height: 262px;">
+			<h2 class="login-title">Login to Fablix</h2>
+			<!-- Set the method to POST to avoid username/password showing on URL
+				 Disable the default action because our JS function will handle it. -->
+			<form id="login_form" method="post" action="#">
+  				<div class="form-group row">
+    					<label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
+    					<div class="col-sm-10">
+      					<input type="text" class="form-control" id="inputEmail3" placeholder="Email" name="username">
+    					</div>
+  				</div>
+  				<div class="form-group row">
+   					<label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
+    					<div class="col-sm-10">
+      					<input type="password" class="form-control" id="inputPassword3" placeholder="Password" name="password">
+    					</div>
+  				</div>
+  				<div class="form-group row">
+    					<div class="col-sm-10">
+    						<input type="submit" class="btn btn-primary" value="Sign In">
+    					</div>
+  				</div>
+			</form>
+			
+			<div id="login_error_message"></div>
+			
+		</div>
+	</div>
 	
-	<div id="login_error_message"></div>
-	
-	<!-- include jQuery-->
+	<!-- include jQuery and Bootstrap JS -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 	<!-- include our own JS file -->
 	<script src="./login.js"></script>
 	

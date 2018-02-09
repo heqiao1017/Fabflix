@@ -28,8 +28,8 @@ function handleSearchResult(resultDataString) {
 	}
 	else {
 		var rowHTML = "<tr><th>ID</th><th onclick=\"sortTable(1)\"><a href=\"#\">Title</a></th><th onclick=\"sortTable(2)\"><a href=\"#\">Year</a></th><th>Director</th><th>Genres</th><th>Stars</th></tr>";
+		//var rowHTML = "<tr><th>ID</th><th onclick=\"sortTable(1)\"><a href=\"#\">Title</a></th><th onclick=\"sortTable(2)\"><a href=\"#\">Year</a></th><th>Director</th><th>Genres</th><th>Stars</th></tr>";
 		movieTableHeadElement.append(rowHTML);
-		
 		// show items per page in html
 		showPage(curItemsPerPage);
 	}	
@@ -44,7 +44,9 @@ function showPage(itemsPerPage) {
 		rowHTML = "";
 		rowHTML += "<tr>";
 		rowHTML += "<th>" + resultDataJson[i]["movie_id"] + "</th>";
-		rowHTML += "<th><form id=\"title_form"+i+"\" action=\"/project2/singlemovie.html\" method=\"get\"><input type=\"hidden\" value=\""+resultDataJson[i]["movie_title"]+"\" name=\"title\"><a href=\"#\" onclick=\"document.getElementById('title_form"+i+"').submit();\" id = \"title_achor\">"+resultDataJson[i]["movie_title"]+"</a></form></th>";
+		rowHTML += "<th><form id=\"title_form"+i+"\" action=\"/project2/singlemovie.html\" method=\"get\"><input type=\"hidden\" value=\""
+		+resultDataJson[i]["movie_title"]+"\" name=\"title\"><a href=\"#\" onclick=\"document.getElementById('title_form"+i
+		+"').submit();\" id = \"title_achor\">"+resultDataJson[i]["movie_title"]+"</a></form><form id='addcart_form"+i+"' action='/project2/shoppingcart.html' method='get'><input type='hidden' value='"+resultDataJson[i]["movie_title"]+"' name='title'><button onClick='document.getElementById(\"addcart_form\").submit();'>Add to Cart</button></form></th>";
 		rowHTML += "<th>" + resultDataJson[i]["movie_year"] + "</th>";
 		rowHTML += "<th>" + resultDataJson[i]["movie_director"] + "</th>";
 		rowHTML += "<th>" + resultDataJson[i]["movie_genres"] + "</th>";
@@ -124,8 +126,6 @@ function empty() {
         return false;
     };
 }
-
-
 
 jQuery.ajax({
 	  data: getQueryString(),

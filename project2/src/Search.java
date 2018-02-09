@@ -84,7 +84,7 @@ public class Search extends HttpServlet {
                     query += "and title LIKE \"%"+ title + "%\" ";
                 }
                 if (!year.equals("")) {
-                        query += "and year LIKE \"%"+ year + "%\" ";
+                        query += "and year =\""+ year + "\" ";
                 }
                 if (!director.equals("")) {
                         director = director.replaceAll(Pattern.quote("+"), " ");
