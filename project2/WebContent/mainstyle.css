@@ -1,0 +1,16 @@
+@charset "UTF-8";
+
+body {
+	background-color: black;
+	background-size: cover;
+	background-position: center;
+	font-size: 20px;
+	color: #E1C2BA;
+	text-shadow: 0px 4px 3px rgba(225, 194, 186, 0.1),
+				 0px 8px 13px rgba(225, 194, 186, 0.2),
+				 0px 18px 23px rgba(225, 194, 186, 0.1);
+}
+
+html {
+	height: 100%;
+}

@@ -146,7 +146,7 @@ public class Checkout extends HttpServlet {
     			}
   
             
-           
+    			previousItems.clear();
             out.write(jsonArray.toString());
             
             rs.close();
