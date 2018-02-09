@@ -46,7 +46,7 @@ function showPage(itemsPerPage) {
 		rowHTML += "<th>" + resultDataJson[i]["movie_id"] + "</th>";
 		rowHTML += "<th><form id=\"title_form"+i+"\" action=\"/project2/singlemovie.html\" method=\"get\"><input type=\"hidden\" value=\""
 		+resultDataJson[i]["movie_title"]+"\" name=\"title\"><a href=\"#\" onclick=\"document.getElementById('title_form"+i
-		+"').submit();\" id = \"title_achor\">"+resultDataJson[i]["movie_title"]+"</a></form><form id='addcart_form"+i+"' action='/project2/shoppingcart.html' method='get'><input type='hidden' value='"+resultDataJson[i]["movie_title"]+"' name='title'><button onClick='document.getElementById(\"addcart_form\").submit();'>Add to Cart</button></form></th>";
+		+"').submit();\" id = \"title_achor\">"+resultDataJson[i]["movie_title"]+"</a></form><form id='addcart_form"+i+"' action='/project2/shoppingcart.html' method='get'><input type='hidden' value='"+resultDataJson[i]["movie_title"]+"' name='title'><button class='btn' onClick='document.getElementById(\"addcart_form\").submit();'>Add to Cart</button></form></th>";
 		rowHTML += "<th>" + resultDataJson[i]["movie_year"] + "</th>";
 		rowHTML += "<th>" + resultDataJson[i]["movie_director"] + "</th>";
 		rowHTML += "<th>" + resultDataJson[i]["movie_genres"] + "</th>";

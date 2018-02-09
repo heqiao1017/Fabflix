@@ -28,28 +28,52 @@ html {
 
 #search {
 	background-color: black;
+	float: left;
 }
-
+#index_buttons {
+	display:inline-block
+}
 #browsebygenre {
 	background-color: black;
+	float: left;
 }
 
 #browsebytitle {
 	background-color: black;
+	float: left;
 }
 
-#logout{
-	background-color: black;
-}
+
 
 #checkout-button {
 	background-color: black;
 	border:none;
+	float: left;
 }
-
-
+#page {
+	width:100%
+}
+a {
+	color:#DAA520
+}
 .jumbotron {
 	background-color: rgba(0, 0, 0, 0.5);
+}
+
+body {
+	font-size:16px
+}
+
+.btn {
+	background-color: #708090
+}
+
+#logout{
+	background-color: black;
+	float: left;
+}
+.checkout {
+	float:left
 }
 
 /* https://www.hydearchitects.com/cms/wp-content/uploads/2015/09/CHP_Petrichor_House_Hyde_and_Hyde.jpg
