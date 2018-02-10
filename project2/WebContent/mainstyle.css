@@ -85,7 +85,7 @@ a {
 }
 
 .btn {
-	background-color: black
+	background-color: black;
 }
 
 #logout{
@@ -97,6 +97,3 @@ a {
 .checkout {
 	float:left
 }
-
-/* https://www.hydearchitects.com/cms/wp-content/uploads/2015/09/CHP_Petrichor_House_Hyde_and_Hyde.jpg
- */
