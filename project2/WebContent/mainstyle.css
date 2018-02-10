@@ -101,3 +101,14 @@ a {
 .checkout {
 	float:left
 }
+.checkout-btn {
+	border: 1px solid #FFF;
+    padding: 5px;
+    width: 150px;
+    text-align: center;
+}
+.checkout-link {
+	width:100px;
+	padding:5px;
+	
+}
