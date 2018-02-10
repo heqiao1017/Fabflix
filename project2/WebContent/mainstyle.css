@@ -35,6 +35,7 @@ html {
 
 #search {
 	background-color: black;
+	border: none;
 	float: left;
 }
 #index_buttons {
@@ -42,11 +43,13 @@ html {
 }
 #browsebygenre {
 	background-color: black;
+	border: none;
 	float: left;
 }
 
 #browsebytitle {
 	background-color: black;
+	border: none;
 	float: left;
 }
 
@@ -72,6 +75,7 @@ a {
 
 #search_submit {
 	background-color: black;
+	border:none;
 }
 
 .input-background {
