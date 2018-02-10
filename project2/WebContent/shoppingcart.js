@@ -30,12 +30,12 @@ function handleShoppingCartResult(resultDataString) {
 			rowHTML += "<th>" + resultDataJson[i]["movie_title"] + "</th>";
 			
 			//rowHTML += "<th>" + resultDataJson[i]["movie_quantity"] + "</th>";
-			rowHTML += "<th><form id='update_form"+i+"' action='/project2/shoppingcart.html' method='get'><input type='hidden' value='"+resultDataJson[i]["movie_title"]+"' name='title'><input value='"+resultDataJson[i]["movie_quantity"]+"' name='qty' id='qty_input"+i+"'><input type ='submit' form='update_form"+i+"' value='Update'><button id='delete_button"+i+"' onclick=\"deleteOnClicked();\">Delete</button></form></th>";//<input type ='submit' form='update_form"+i+"' value='Delete'>
+			rowHTML += "<th><form id='update_form"+i+"' action='/project2/shoppingcart.html' method='get'><input type='hidden' value='"+resultDataJson[i]["movie_title"]+"' name='title'><input class='input-background' value='"+resultDataJson[i]["movie_quantity"]+"' name='qty' id='qty_input"+i+"'><input class=\"btn btn-outline-success\" type ='submit' form='update_form"+i+"' value='Update'><button class=\"btn btn-outline-success\" id='delete_button"+i+"' onclick=\"deleteOnClicked();\">Delete</button></form></th>";//<input type ='submit' form='update_form"+i+"' value='Delete'>
 			
 			rowHTML += "</tr>";
 			cartTableBodyElement.append(rowHTML);
 		}
-		cartTableBodyElement.append("<form action='/project2/checkout.html' method='get'><input type ='submit' value='Proceed to Checkout'></form>");
+		cartTableBodyElement.append("<form action='/project2/checkout.html' method='get'><input class=\"btn btn-outline-success\" type ='submit' value='Proceed to Checkout'></form>");
 	}
 	
 }
