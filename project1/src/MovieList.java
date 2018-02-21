@@ -91,5 +91,3 @@ public class MovieList extends HttpServlet {
         out.close();
     }
 }
-
-

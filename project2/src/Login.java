@@ -38,6 +38,13 @@ public class Login extends HttpServlet {
 
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
+		boolean isEmployee = false;
+		
+		if (username == null && password == null) {
+			isEmployee = true;
+			username = request.getParameter("e_username");
+			password = request.getParameter("e_password");
+		}
 		
 //		String logout = request.getParameter("logout");
 //		if (logout != null && request.getSession().getAttribute("user") != null) {
@@ -50,11 +57,23 @@ public class Login extends HttpServlet {
         String loginPasswd = "mypassword";
         String loginUrl = "jdbc:mysql://localhost:3306/moviedb?useSSL=false";
         
-
         response.setContentType("application/json");
+        
+        String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+		System.out.println("gRecaptchaResponse=" + gRecaptchaResponse);
+		boolean valid = VerifyUtils.verify(gRecaptchaResponse);
+		
+		
+		PrintWriter out = response.getWriter();
+		 
+		if (!valid) {
+			JsonObject responseJsonObject = new JsonObject();
+			responseJsonObject.addProperty("status", "fail");
+			responseJsonObject.addProperty("message", "Recaptcha WRONG!!!!!");
+			out.write(responseJsonObject.toString());	
+			return;
+		}
 
-        // Output stream to STDOUT
-        PrintWriter out = response.getWriter();
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
@@ -65,33 +84,40 @@ public class Login extends HttpServlet {
             Statement statement = dbcon.createStatement();
             
             String query = "select password from customers where email = \"" + username + "\"";
+            if (isEmployee) {
+            		query = "select password from employees where email = \"" + username + "\"";
+            }
+            
             System.out.println(query);
             // Perform the query
             ResultSet rs = statement.executeQuery(query);
             boolean exist = rs.next();
-            System.out.println("exist: " + exist);
+//            System.out.println("exist: " + exist);
             JsonObject responseJsonObject = new JsonObject();
             
             if (exist) {
             		//email exist, check password
             		if (password.equals(rs.getString("password"))) {
             			//login success
-            			request.getSession().setAttribute("user", new User(username));
-            			//JsonObject responseJsonObject = new JsonObject();
+            			if (!isEmployee) {
+            				request.getSession().setAttribute("user", new User(username));
+            			}
+            			else {
+            				request.getSession().setAttribute("user", new User(username));
+            			}
+            			
 	    	    			responseJsonObject.addProperty("status", "success");
 	    	    			responseJsonObject.addProperty("message", "success");
-	    	    			//out.write(responseJsonObject.toString());
             		}
             		else {
 	    	    			responseJsonObject.addProperty("status", "fail");
 	    	    			responseJsonObject.addProperty("message", "Incorrect password, try again!");
-	    	    			//out.write(responseJsonObject.toString());
             		}
             }
             else {
             		System.out.println("email does not exist ");
             		//email does not exist
-            		//JsonObject responseJsonObject = new JsonObject();
+
 	    			responseJsonObject.addProperty("status", "fail");
 	    			responseJsonObject.addProperty("message", "User " + username + " not exist!");	
             }
