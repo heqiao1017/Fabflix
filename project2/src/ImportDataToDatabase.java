@@ -165,10 +165,10 @@ public class ImportDataToDatabase {
             while (rs.next()) { 
             		genreMaxInt = Integer.parseInt(rs.getString("max(id)"));
             }
-            System.out.println("genreMaxInt"+genreMaxInt);
+            //System.out.println("genreMaxInt"+genreMaxInt);
             
-	    		PrintStream fileStream = new PrintStream("output.txt");
-	    		System.setOut(fileStream);
+//	    		PrintStream fileStream = new PrintStream("output.txt");
+//	    		System.setOut(fileStream);
             //------------------------>from here, using bash insert to insert all the parsed data into the database
             conn.setAutoCommit(false);
             
