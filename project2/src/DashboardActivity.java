@@ -74,7 +74,7 @@ public class DashboardActivity extends HttpServlet {
         }
         
         try {
-        		Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+        		Class.forName("com.mysql.jdbc.Driver").newInstance();
             Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
             Statement statement = dbcon.createStatement();
             String query = "";
