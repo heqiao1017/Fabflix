@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<!-- Bootstrap CSS -->
+	<title>Checkout</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="mainstyle.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</head>
+<body>
+<div id="page">
+<div id="container" class="container">
+	<div class="jumbotron">
+		<h1>Customer Information</h1>
+	</div>
+	
+	<form id="info_form" method="get" action="/project2/confirmation.html">
+		<div class="form-group row">
+	    		<label class="col-sm-5 col-form-label">Credit Card Number</label>
+   				<div class="col-sm-10">
+     				<input class="input-background" id = "creditcard" type="text" placeholder="Enter credit card number" name="creditcard">
+   				</div>
+   			</div>
+		<div class="form-group row">
+	    		<label class="col-sm-5 col-form-label">Expiration Date</label>
+   				<div class="col-md-10">
+     				<input class="input-background" id="expiration" type="text" placeholder="Enter expiration date" name="expiration">
+   				</div>
+   			</div>
+   		<div class="form-group row">
+	    		<label class="col-sm-5 col-form-label">First Name</label>
+   				<div class="col-sm-10">
+     				<input class="input-background" id="firstname" type="text" placeholder="Enter your first name" name="firstname">
+   				</div>
+   			</div>
+		<div class="form-group row">
+	    		<label class="col-sm-5 col-form-label">Last Name</label>
+   				<div class="col-sm-10">
+     				<input class="input-background" id = "lastname" type="text" placeholder="Enter your last name" name="lastname">
+   				</div>
+   			</div>
+
+		<input class="btn btn-outline-danger" type ="submit" id="checkout-button" value="Submit" onClick="return empty()">
+	</form>
+
+	<button class="btn btn-outline-success" type="button" id='back_to_mainPage' onclick="window.location.href='./index.html'">Main Page</button>
+    <button class="btn btn-outline-success" type="button" id='logout' onclick="window.location.href='./login.html'">Logout</button>
+</div>	
+</div>
+
+	<!-- include jQuery and Bootstrap JS -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	
+</body>
+</html>

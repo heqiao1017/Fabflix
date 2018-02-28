@@ -1,0 +1,114 @@
+@charset "UTF-8";
+
+body {
+	background-color: black;
+	background-size: cover;
+	background-position: center;
+	font-size: 1.5em;
+	color: white;
+}
+
+h1 {
+	text-shadow: 0px 4px 3px rgba(255, 255, 255, 0.1),
+				 0px 8px 13px rgba(255, 255, 255, 0.2),
+				 0px 18px 23px rgba(255, 255, 255, 0.1);
+}
+
+html {
+	height: 100%;
+}
+
+#page {
+	position: relative;
+	margin: 30px auto;
+	width: 960px;
+	overflow: hidden;
+}
+
+#search_form {
+	color: white;
+	font-size: 1em;
+	text-shadow: 10px 4px 3px rgba(0, 0, 0, 0.1),
+				 10px 8px 13px rgba(0, 0, 0, 0.2),
+				 10px 18px 23px rgba(0, 0, 0, 0.1);
+}
+
+#search {
+	background-color: black;
+	border: none;
+	float: left;
+}
+#index_buttons {
+	display:inline-block
+}
+#browsebygenre {
+	background-color: black;
+	border: none;
+	float: left;
+}
+
+#browsebytitle {
+	background-color: black;
+	border: none;
+	float: left;
+}
+
+#back_to_mainPage {
+	background-color: black;
+	border:none;
+	float: left;
+}
+
+
+#checkout-button {
+	background-color: black;
+	border:none;
+	float: left;
+}
+#page {
+	width:100%
+}
+
+a {
+	color:#DAA520
+}
+
+#search_submit {
+	background-color: black;
+	border:none;
+}
+
+.input-background {
+	background-color: black;
+	font-size: 0.8em;
+}
+
+.jumbotron {
+	background-color: rgba(0, 0, 0, 0.5);
+	color: black;
+}
+
+.btn {
+	background-color: black;
+}
+
+#logout{
+	background-color: black;
+	float: left;
+	border:none;
+}
+
+.checkout {
+	float:left
+}
+.checkout-btn {
+	border: 1px solid #FFF;
+    padding: 5px;
+    width: 150px;
+    text-align: center;
+}
+.checkout-link {
+	width:100px;
+	padding:5px;
+	
+}
