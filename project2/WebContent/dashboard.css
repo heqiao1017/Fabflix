@@ -1,0 +1,14 @@
+.metatabletr {
+	text-align:left;
+	background-color:#efefef;
+	padding:5px;
+}
+.metatableth{
+	text-align:left;
+	border:1px solid #efefef;
+	padding:5px;
+}
+.metaable {
+	margin-top:10px;
+	width:500px;
+}

@@ -43,7 +43,7 @@ public class Search extends HttpServlet {
 		
 		String genre = request.getParameter("genre");//new added
 		String titleFirstChar = request.getParameter("titleFirstChar");//new added
-        
+		
 	
 		String loginUser = "mytestuser";
         String loginPasswd = "mypassword";
@@ -66,13 +66,12 @@ public class Search extends HttpServlet {
             		+ "FROM stars s, stars_in_movies t, genres g, genres_in_movies e, movies m "
             		+ "WHERE m.id = t.movieId AND t.starId = s.id AND m.id = e.movieId AND e.genreId = g.id ";
             
-//            if (genre != null) {
-//	        		genre = genre.replaceAll(Pattern.quote("+"), " ");
-//	            System.out.println("genre in single movie java: "+ genre);
-//	            query += "AND g.name='"+ genre + "' ";
-//            }
             if (genre!=null) {
-        			query += "and g.name='"+genre+"' ";
+            		query = "SELECT m.id as ID, title, year, director, "
+                		+ "GROUP_CONCAT(DISTINCT g.name) AS genres, GROUP_CONCAT(DISTINCT s.name) AS stars "
+                		+ "FROM stars s, stars_in_movies t, genres g, genres_in_movies e, movies m "
+                		+"INNER JOIN (select r.movieId as mId from genres_in_movies r INNER JOIN movies x on x.id = r.movieId INNER JOIN genres f on f.id = r.genreId and f.name = '"+genre+"') as k ON k.mId = m.id"
+                		+ " WHERE m.id = t.movieId AND t.starId = s.id AND m.id = e.movieId AND e.genreId = g.id ";
             }
             else if (titleFirstChar != null) {
 	        		query += "and title like '"+titleFirstChar+"%' ";
@@ -80,7 +79,6 @@ public class Search extends HttpServlet {
             else {
                 if (!title.equals("")) {
                     title = title.replaceAll(Pattern.quote("+"), " ");
-//                  System.out.println(title);
                     query += "and title LIKE \"%"+ title + "%\" ";
                 }
                 if (!year.equals("")) {
