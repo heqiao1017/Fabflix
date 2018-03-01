@@ -99,7 +99,7 @@ a {
 }
 
 .checkout {
-	float:left
+	float:left;
 }
 .checkout-btn {
 	border: 1px solid #FFF;
@@ -110,5 +110,11 @@ a {
 .checkout-link {
 	width:100px;
 	padding:5px;
-	
 }
+
+.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; color:#000; }
+.autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
+.autocomplete-selected { background: #F0F0F0; }
+.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+.autocomplete-group { padding: 2px 5px; color:#000;background: #ddd; font-weight: 600; }
+.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }

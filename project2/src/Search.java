@@ -41,10 +41,11 @@ public class Search extends HttpServlet {
 		String firstName = request.getParameter("firstName");
 		String lastName = request.getParameter("lastName");
 		
-		String genre = request.getParameter("genre");//new added
-		String titleFirstChar = request.getParameter("titleFirstChar");//new added
+		String genre = request.getParameter("genre");//from search by genre, since this jump to movielist.html, which connected with search.js - > search.java
+		String titleFirstChar = request.getParameter("titleFirstChar");//from search by movie title, same up
 		
-	
+		String full_text_query = request.getParameter("query");
+		
 		String loginUser = "mytestuser";
         String loginPasswd = "mypassword";
         String loginUrl = "jdbc:mysql://localhost:3306/moviedb?useSSL=false";
@@ -65,8 +66,20 @@ public class Search extends HttpServlet {
             		+ "GROUP_CONCAT(DISTINCT g.name) AS genres, GROUP_CONCAT(DISTINCT s.name) AS stars "
             		+ "FROM stars s, stars_in_movies t, genres g, genres_in_movies e, movies m "
             		+ "WHERE m.id = t.movieId AND t.starId = s.id AND m.id = e.movieId AND e.genreId = g.id ";
-            
-            if (genre!=null) {
+            if (full_text_query != null) {
+            		String[] splitStrs = full_text_query.trim().split("\\s+");
+            		//query = "SELECT id FROM movies WHERE MATCH (title) AGAINST ('+grad* +E*' IN BOOLEAN MODE);";
+            		query = "SELECT m.id as ID, title, year, director, "
+                    		+ "GROUP_CONCAT(DISTINCT g.name) AS genres, GROUP_CONCAT(DISTINCT s.name) AS stars "
+                    		+ "FROM stars s, stars_in_movies t, genres g, genres_in_movies e, movies m "
+                    		+"INNER JOIN (select id from movies where match (title) against ('";//+"')) as k ON k.id = m.id";
+            		for (String splitStr : splitStrs) {
+            			query += "+"+splitStr+"* ";
+            		}
+            		query.trim();
+            		query += "' IN BOOLEAN MODE)) as k on k.id = m.id WHERE m.id = t.movieId AND t.starId = s.id AND m.id = e.movieId AND e.genreId = g.id ";
+            }
+            else if (genre!=null) {
             		query = "SELECT m.id as ID, title, year, director, "
                 		+ "GROUP_CONCAT(DISTINCT g.name) AS genres, GROUP_CONCAT(DISTINCT s.name) AS stars "
                 		+ "FROM stars s, stars_in_movies t, genres g, genres_in_movies e, movies m "

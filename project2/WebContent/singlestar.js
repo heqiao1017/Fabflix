@@ -4,9 +4,10 @@ function splitListItems(listItems) {
 	return array;
 }
 
-function handleStarResult(resultDataString) {
+function handleStarResult() {
+	var resultDataString = localStorage.getItem('singleStar');
 	console.log(resultDataString);
-	resultDataJson = JSON.parse(JSON.stringify(resultDataString));
+	resultDataJson = JSON.parse(resultDataString);
 	var movieElement = jQuery("#singlestar_table");
 	var rowHTML = "";
 	rowHTML += "<tr><th>Name:</th>";
@@ -21,7 +22,8 @@ function handleStarResult(resultDataString) {
 	rowHTML += "<th>";
 	var movie_arr = splitListItems(resultDataJson[0]["movie_title"]);
 	for (var j = 0; j < movie_arr.length; j++) {
-		rowHTML += "<form id='movie_form"+j+"' action=\"/project2/singlemovie.html\" method=\"get\"><input type=\"hidden\" value=\""+movie_arr[j]+"\" name=\"title\"><a href=\"#\" onclick=\"document.getElementById('movie_form"+j+"').submit();\">"+movie_arr[j]+"</a></form>"
+		//rowHTML += "<form id='movie_form"+j+"' action=\"/project2/singlemovie.html\" method=\"get\"><input type=\"hidden\" value=\""+movie_arr[j]+"\" name=\"title\"><a href=\"#\" onclick=\"document.getElementById('movie_form"+j+"').submit();\">"+movie_arr[j]+"</a></form>"
+		rowHTML += "<a href=\"#\" onclick=\"displaySingleMovie(this, '"+movie_arr[j]+"')\">"+movie_arr[j]+"</a>";
 	}
 	rowHTML += "</th></tr>";
 	
@@ -38,10 +40,28 @@ function getQueryString() {
 	return result;
 }
 
-jQuery.ajax({
-	data: getQueryString(),
-	dataType: "json",
-	method: "GET",
-	url: "/project2/singleStar",
-	success: (resultData) => handleStarResult(resultData)
-});
+function displaySingleMovie(id, title) {
+	jQuery.ajax({
+		"method": "GET",
+		"dataType": "json",
+		"url": "/project2/SingleMovie?title=" + title,
+		"success": function(resultDataString) {
+			//console.log(resultDataString);
+			localStorage.setItem('singleMovie', JSON.stringify(resultDataString));
+			window.location.href = "/project2/singlemovie.html";
+		},
+		"error": function(errorData) {
+			console.log("displaySingleMovie ajax error")
+			console.log(errorData)
+		}
+	})
+    //id.innerHTML = "Ooops!";
+}
+
+//jQuery.ajax({
+//	data: getQueryString(),
+//	dataType: "json",
+//	method: "GET",
+//	url: "/project2/singleStar",
+//	success: (resultData) => handleStarResult(resultData)
+//});
