@@ -69,23 +69,30 @@ public class MovieSuggestion extends HttpServlet {
 	    			
 	    			System.out.println(query);
 	    			
+	    			int limit = 10;
+	    			
 	    			ResultSet rs = statement.executeQuery(query);
-	    			while (rs.next())
+	    			while (rs.next() && limit > 0) {
 	    				jsonArray.add(generateJsonObject(rs.getString("id"), rs.getString("title"), "Movie"));
-	    			
-	    			query = "SELECT id, name FROM stars WHERE MATCH (name) AGAINST ('"; //('+grad* +E*' IN BOOLEAN MODE);";
-	            for (String splitStr : splitStrs) {
-	    				query += "+"+splitStr+"* ";
+	    				limit--;
 	    			}
-	    			query.trim();
-	    			query += "' IN BOOLEAN MODE)";
 	    			
-	    			System.out.println(query);
-	    			
-	    			rs = statement.executeQuery(query);
-	    			while (rs.next())
-	    				jsonArray.add(generateJsonObject(rs.getString("id"), rs.getString("name"), "Star"));
-	
+	    			if (limit > 0 ) {
+	    				query = "SELECT id, name FROM stars WHERE MATCH (name) AGAINST ('"; //('+grad* +E*' IN BOOLEAN MODE);";
+	    	            for (String splitStr : splitStrs) {
+	    	    				query += "+"+splitStr+"* ";
+	    	    			}
+	    	    			query.trim();
+	    	    			query += "' IN BOOLEAN MODE)";
+	    	    			
+	    	    			System.out.println(query);
+	    	    			
+	    	    			rs = statement.executeQuery(query);
+	    	    			while (rs.next() && limit > 0) {
+	    	    				jsonArray.add(generateJsonObject(rs.getString("id"), rs.getString("name"), "Star"));
+	    	    				limit--;
+	    	    			}
+	    			}
 				response.getWriter().write(jsonArray.toString());
 				rs.close();
 	            statement.close();

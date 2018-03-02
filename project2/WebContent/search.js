@@ -226,8 +226,7 @@ function handleLookup(query, doneCallback) {
 	for (var [key, value] of map.entries()) {
 		if (key.startsWith(pure_query)) {
 			query_cached = true;
-			//data = value;
-			console.log(value);
+			console.log("=>from cahce suggestion list: \n"+value);//suggestion list
 			doneCallback({suggestions: value});
 			break;
 		}
@@ -266,9 +265,7 @@ function handleLookup(query, doneCallback) {
 function handleLookupAjaxSuccess(data, query, doneCallback) {
 	console.log("lookup ajax successful")
 	
-	// parse the string into JSON
-	//var jsonData = JSON.parse(data);no need to parse since data is already json data
-	console.log(data)
+	console.log("=>server response suggestion list: \n"+data);
 	
 	//if you want to cache the result into a global variable you can do it here
 	var pure_query = query.trim().toLowerCase();
@@ -426,7 +423,10 @@ $('#autocomplete').keypress(function(event) {
 	}
 })
 
-// TODO: if you have a "search" button, you may want to bind the onClick event as well of that button
+//if you have a "search" button, you may want to bind the onClick event as well of that button
+function searchfulltext() {
+	handleNormalSearch($('#autocomplete').val());
+}
 
 
 
