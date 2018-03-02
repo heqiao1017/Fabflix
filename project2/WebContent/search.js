@@ -205,6 +205,7 @@ $("#browsebytitle").click(function(){
 //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map
 var movieMap = new Map();
 var starMap = new Map();
+var map = new Map();
 
 
 /*
@@ -220,29 +221,17 @@ function handleLookup(query, doneCallback) {
 	// TODO: if you want to check past query results first, you can do it here
 	var pure_query = query.trim().toLowerCase();
 	var query_cached = false;
-	var data = Array();
+	//var data;
 	console.log("---->check past query results first");
-	for (var [key, value] of movieMap.entries()) {
-		//console.log("movieMap.entries=> "+ key + ' = ' + value);
+	for (var [key, value] of map.entries()) {
 		if (key.startsWith(pure_query)) {
 			query_cached = true;
-			data.push(value);
+			//data = value;
 			console.log(value);
+			doneCallback({suggestions: value});
 			break;
 		}
 	}
-	for (var [key, value] of starMap.entries()) {
-		//console.log("starMap.entries=> "+key + ' = ' + value);
-		if (key.startsWith(pure_query)) {
-			query_cached = true;
-			data.push(value);
-			console.log(value);
-			break;
-		}
-	}
-	console.log(data);
-
-	doneCallback({suggestions: data});//有问题，要改！！！！！！！！！
 	
 	if (!query_cached) {
 		console.log("--->sending AJAX request to backend Java Servlet")
@@ -281,26 +270,11 @@ function handleLookupAjaxSuccess(data, query, doneCallback) {
 	//var jsonData = JSON.parse(data);no need to parse since data is already json data
 	console.log(data)
 	
-	// TODO: if you want to cache the result into a global variable you can do it here
+	//if you want to cache the result into a global variable you can do it here
 	var pure_query = query.trim().toLowerCase();
 	console.log("--->Cache the result into a global variable");
-	for (var i = 0; i < data.length; i++) {
-		//console.log(data[i]);
-		if (data[i]["data"]["category"] === "Movie") {
-			if (!movieMap.has(pure_query)) {
-				movieMap.set(pure_query, []);
-			}
-			movieMap.get(pure_query).push(data[i]);
-		}
-		else {
-			if (!starMap.has(pure_query)) {
-				starMap.set(pure_query, []);	
-			}
-			starMap.get(pure_query).push(data[i]);
-		}
-	}
+	map.set(pure_query, data);
 	
-
 	// call the callback function provided by the autocomplete library
 	// add "{suggestions: jsonData}" to satisfy the library response format according to
 	//   the "Response Format" section in documentation
