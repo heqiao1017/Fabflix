@@ -23,7 +23,7 @@ function handleStarResult() {
 	var movie_arr = splitListItems(resultDataJson[0]["movie_title"]);
 	for (var j = 0; j < movie_arr.length; j++) {
 		//rowHTML += "<form id='movie_form"+j+"' action=\"/project2/singlemovie.html\" method=\"get\"><input type=\"hidden\" value=\""+movie_arr[j]+"\" name=\"title\"><a href=\"#\" onclick=\"document.getElementById('movie_form"+j+"').submit();\">"+movie_arr[j]+"</a></form>"
-		rowHTML += "<a href=\"#\" onclick=\"displaySingleMovie(this, '"+movie_arr[j]+"')\">"+movie_arr[j]+"</a>";
+		rowHTML += "<div><a href=\"#\" onclick=\"displaySingleMovie(this, '"+movie_arr[j]+"')\">"+movie_arr[j]+"</a></div>";
 	}
 	rowHTML += "</th></tr>";
 	

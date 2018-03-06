@@ -44,7 +44,7 @@ function handleMovieResult() {
 	for (var j = 0; j < genre_arr.length; j++) {
 		//rowHTML += "<form id='genre_form"+j+"' action=\"/project2/movielist.html\" method=\"get\"><input type=\"hidden\" value=\""+genre_arr[j]+"\" name=\"genre\"><a href=\"#\" onclick=\"document.getElementById('genre_form"+j+"').submit();\">"+genre_arr[j]+"</a></form>"
 		//<button onclick="displayDate()">The time is?</button>
-		rowHTML += "<a href=\"#\" onclick=\"displayMovies(this, '"+genre_arr[j]+"')\">"+genre_arr[j]+"</a>";
+		rowHTML += "<div><a href=\"#\" onclick=\"displayMovies(this, '"+genre_arr[j]+"')\">"+genre_arr[j]+"</a></div>";
 	}
 	rowHTML += "</div>";
 	rowHTML += "</div>"
@@ -56,7 +56,7 @@ function handleMovieResult() {
 	var star_arr = splitListItems(resultDataJson[0]["movie_stars"]);
 	for (var j = 0; j < star_arr.length; j++) {
 		//rowHTML += "<form id='star_form"+j+"' action=\"/project2/singlestar.html\" method=\"get\"><input type=\"hidden\" value=\""+star_arr[j]+"\" name=\"star\"><a href=\"#\" onclick=\"document.getElementById('star_form"+j+"').submit();\">"+star_arr[j]+"</a></form>"
-		rowHTML += "<a href=\"#\" onclick=\"displayStar(this, '"+star_arr[j]+"')\">"+star_arr[j]+"</a>";
+		rowHTML += "<div><a href=\"#\" onclick=\"displayStar(this, '"+star_arr[j]+"')\">"+star_arr[j]+"</a></div>";
 	}
 	rowHTML += "</div>";
 	rowHTML += "</div>"
