@@ -1,5 +1,6 @@
 package edu.uci.ics.fabflixmobile;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,23 +10,36 @@ import android.view.View;
 import android.widget.Button;
 
 public class MovieListActivity extends ActionBarActivity {
+
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private String[] movies;
 
-    private int total_movies;
     private final static int ITEMS_PER_PAGE=10;
+
+    private String[] movies;
+    private int total_movies;
     private int lastPage;
     private int currentPage = 0;
 
     Button nextBtn, prevBtn;
+
+    private SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movielist);
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+
+        if (savedInstanceState != null) {
+            movies = savedInstanceState.getString("MOVIES").split("#");
+            total_movies = savedInstanceState.getInt("TOTAL_MOVIES");
+            lastPage = savedInstanceState.getInt("LAST_PAGE");
+            currentPage = savedInstanceState.getInt("CURRENT_PAGE");
+        }
+        preferences = getPreferences(MODE_PRIVATE);
+        preferences.edit().clear().commit();//has to clear, otherwise previous search result will overlap with the new search result
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -35,7 +49,7 @@ public class MovieListActivity extends ActionBarActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        // specify an adapter (see also next example)
+        // specify an adapter
         Bundle b=this.getIntent().getExtras();
         movies=b.getStringArray("jsonArray");
         for (int i = 0; i < movies.length; i++) {
@@ -73,6 +87,66 @@ public class MovieListActivity extends ActionBarActivity {
                 toggleButtons();
             }
         });
+
+        Log.d("MovieListActivity", "onCreate");
+    }
+
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        movies = savedInstanceState.getString("MOVIES").split("#");
+        total_movies = savedInstanceState.getInt("TOTAL_MOVIES");
+        lastPage = savedInstanceState.getInt("LAST_PAGE");
+        currentPage = savedInstanceState.getInt("CURRENT_PAGE");
+        Log.d("MovieListActivity", "onRestoreInstanceState");
+    }
+
+    // invoked when the activity may be temporarily destroyed, save the instance state here
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < movies.length; i++) {
+            sb.append(movies[i]).append("#");
+        }
+
+        outState.putString("MOVIES", sb.toString());
+        outState.putInt("TOTAL_MOVIES", total_movies);
+        outState.putInt("LAST_PAGE", lastPage);
+        outState.putInt("CURRENT_PAGE", currentPage);
+
+        // call superclass to save any view hierarchy
+        super.onSaveInstanceState(outState);
+        Log.d("MovieListActivity", "onSaveInstanceState");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (preferences.getString("MOVIES", null) != null) {
+            movies = preferences.getString("MOVIES", null).split("#");
+            total_movies = preferences.getInt("TOTAL_MOVIES", 0);
+            lastPage = preferences.getInt("LAST_PAGE", 0);
+            currentPage = preferences.getInt("CURRENT_PAGE", 0);
+        }
+        Log.d("MovieListActivity", "onResume");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences.Editor editor = preferences.edit();  // Put the values from the UI
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < movies.length; i++) {
+            sb.append(movies[i]).append("#");
+        }
+        editor.putString("MOVIES", sb.toString()); // value to store
+        editor.putInt("TOTAL_MOVIES", total_movies);
+        editor.putInt("LAST_PAGE", lastPage);
+        editor.putInt("CURRENT_PAGE", currentPage);
+        // Commit to storage
+        editor.commit();
+        Log.d("MovieListActivity", "onPause");
     }
 
 

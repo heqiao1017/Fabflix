@@ -1,11 +1,12 @@
 package edu.uci.ics.fabflixmobile;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -19,34 +20,74 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LoginActivity extends ActionBarActivity{
-    private String email;
-    private String password;
+
+    private String email = null;
+    private String password = null;
+
+    private TextView username;
+    private TextView user_password;
+
+    private SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_login);
+        username = (TextView)findViewById(R.id.email);
+        user_password = (TextView)findViewById(R.id.password);
+
+        // recovering the instance state
+        if (savedInstanceState != null) {
+            username.setText(savedInstanceState.getString("USER_NAME_KEY"));
+            user_password.setText(savedInstanceState.getString("USER_PASSWORD_KEY"));
+        }
+        preferences = getPreferences(MODE_PRIVATE);
+        preferences.edit().clear().commit();
+        Log.d("login", "onCreate");
     }
 
-//    // This callback is called only when there is a saved instance previously saved using
-//    // onSaveInstanceState(). We restore some state in onCreate() while we can optionally restore
-//    // other state here, possibly usable after onStart() has completed.
-//    // The savedInstanceState Bundle is same as the one used in onCreate().
-//    @Override
-//    public void onRestoreInstanceState(Bundle savedInstanceState) {
-//        ((TextView)findViewById(R.id.email)).setText(savedInstanceState.getString("USER_NAME_KEY"));
-//        ((TextView)findViewById(R.id.password)).setText(savedInstanceState.getString("USER_PASSWORD_KEY"));
-//    }
-//
-//    // invoked when the activity may be temporarily destroyed, save the instance state here
-//    @Override
-//    public void onSaveInstanceState(Bundle outState) {
-//        outState.putString("USER_NAME_KEY", ((EditText)findViewById(R.id.email)).getText().toString());
-//        outState.putString("USER_PASSWORD_KEY", ((EditText)findViewById(R.id.password)).getText().toString());
-//
-//        // call superclass to save any view hierarchy
-//        super.onSaveInstanceState(outState);
-//    }
+    // This callback is called only when there is a saved instance previously saved using
+    // onSaveInstanceState(). We restore some state in onCreate() while we can optionally restore
+    // other state here, possibly usable after onStart() has completed.
+    // The savedInstanceState Bundle is same as the one used in onCreate().
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        username.setText(savedInstanceState.getString("USER_NAME_KEY"));
+        user_password.setText(savedInstanceState.getString("USER_PASSWORD_KEY"));
+        Log.d("login", "onRestoreInstanceState");
+    }
+
+    // invoked when the activity may be temporarily destroyed, save the instance state here
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString("USER_NAME_KEY", username.getText().toString());
+        outState.putString("USER_PASSWORD_KEY", user_password.getText().toString());
+
+        // call superclass to save any view hierarchy
+        super.onSaveInstanceState(outState);
+        Log.d("login", "onSaveInstanceState");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        username.setText(preferences.getString("USER_NAME_KEY", ""));
+        user_password.setText(preferences.getString("USER_PASSWORD_KEY", ""));
+        Log.d("login", "onResume");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences.Editor editor = preferences.edit();  // Put the values from the UI
+        editor.putString("USER_NAME_KEY", username.getText().toString()); // value to store
+        editor.putString("USER_PASSWORD_KEY", user_password.getText().toString()); // value to store
+        // Commit to storage
+        editor.commit();
+        Log.d("login", "onPause");
+    }
+
 
     public void connectToTomcat(View view){
 
@@ -54,10 +95,10 @@ public class LoginActivity extends ActionBarActivity{
         RequestQueue queue = Volley.newRequestQueue(this);
 
         //get edit text input
-        email = ((EditText)findViewById(R.id.email)).getText().toString();
-        password = ((EditText)findViewById(R.id.password)).getText().toString();
+        email = username.getText().toString();
+        password = user_password.getText().toString();
 
-        String url = "http://54.153.26.182:8080/project4/AndroidLogin?username="+email+"&password="+password;
+        String url = "http://192.168.0.9:8080/project4/AndroidLogin?username="+email+"&password="+password;
 
         Log.d("url", url);
         StringRequest postRequest = new StringRequest(Request.Method.GET, url,

@@ -77,7 +77,31 @@ public class Search extends HttpServlet {
             			query += "+"+splitStr+"* ";
             		}
             		query.trim();
-            		query += "' IN BOOLEAN MODE)) as k on k.id = m.id WHERE m.id = t.movieId AND t.starId = s.id AND m.id = e.movieId AND e.genreId = g.id ";
+            		query += "' IN BOOLEAN MODE)";
+            		//########################
+            		String new_query = full_text_query.trim().toLowerCase();
+	    			int len = new_query.length();
+	    			if (len > 5) {
+    					if (len <= 9)
+    						query += " OR edth(lower(title), '" + new_query + "', 1)";
+    					else if (len <= 15)
+    						query += " OR edth(lower(title), '" + new_query + "', 2)";
+    					else
+    						query += " OR edth(lower(title), '" + new_query + "', 3)";
+    				}
+//	    			for (String splitStr : splitStrs) {
+//	    				int len = splitStr.length();
+//	    				if (len > 2) {
+//	    					if (len <= 6)
+//	    						query += " OR edth(title, '" + splitStr.toLowerCase() + "', 1)";
+//	    					else if (len <= 8)
+//	    						query += " OR edth(title, '" + splitStr.toLowerCase() + "', 2)";
+//	    					else
+//	    						query += " OR edth(title, '" + splitStr.toLowerCase() + "', 3)";
+//	    				}
+//	    			}
+	    			//########################
+            		query +=	 ") as k on k.id = m.id WHERE m.id = t.movieId AND t.starId = s.id AND m.id = e.movieId AND e.genreId = g.id ";
             }
             else if (genre!=null) {
             		query = "SELECT m.id as ID, title, year, director, "

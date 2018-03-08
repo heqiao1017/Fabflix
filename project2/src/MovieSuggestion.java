@@ -60,12 +60,37 @@ public class MovieSuggestion extends HttpServlet {
 	            Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
 	            Statement statement = dbcon.createStatement();
 	            String[] splitStrs = full_text_query.trim().split("\\s+");
+	            //########################
 	            String query = "SELECT id, title FROM movies WHERE MATCH (title) AGAINST ('"; //('+grad* +E*' IN BOOLEAN MODE);";
 	            for (String splitStr : splitStrs) {
 	    				query += "+"+splitStr+"* ";
 	    			}
 	    			query.trim();
 	    			query += "' IN BOOLEAN MODE)";
+	    			//########################
+	    			String new_query = full_text_query.trim().toLowerCase();
+	    			int len = new_query.length();
+	    			if (len > 5) {
+    					if (len <= 9)
+    						query += " OR edth(lower(title), '" + new_query + "', 1)";
+    					else if (len <= 15)
+    						query += " OR edth(lower(title), '" + new_query + "', 2)";
+    					else
+    						query += " OR edth(lower(title), '" + new_query + "', 3)";
+    				}
+	    			
+//	    			for (String splitStr : splitStrs) {
+//	    				int len = splitStr.length();
+//	    				if (len > 2) {
+//	    					if (len <= 6)
+//	    						query += " OR edth(title, '" + splitStr.toLowerCase() + "', 1);";
+//	    					else if (len <= 8)
+//	    						query += " OR edth(title, '" + splitStr.toLowerCase() + "', 2);";
+//	    					else
+//	    						query += " OR edth(title, '" + splitStr.toLowerCase() + "', 3);";
+//	    				}
+//	    			}
+	    			//########################
 	    			
 	    			System.out.println(query);
 	    			
@@ -84,6 +109,14 @@ public class MovieSuggestion extends HttpServlet {
 	    	    			}
 	    	    			query.trim();
 	    	    			query += "' IN BOOLEAN MODE)";
+	    	    			if (len > 5) {
+	        					if (len <= 9)
+	        						query += " OR edth(lower(name), '" + new_query + "', 1)";
+	        					else if (len <= 15)
+	        						query += " OR edth(lower(name), '" + new_query + "', 2)";
+	        					else
+	        						query += " OR edth(lower(name), '" + new_query + "', 3)";
+	        				}
 	    	    			
 	    	    			System.out.println(query);
 	    	    			

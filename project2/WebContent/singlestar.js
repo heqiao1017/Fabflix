@@ -1,5 +1,6 @@
 function splitListItems(listItems) {
-	var array = listItems.split(',');
+	var array = listItems.split('----');
+	//var array = listItems.split(seperator);
 	console.log(array)
 	return array;
 }

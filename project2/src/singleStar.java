@@ -54,7 +54,7 @@ public class singleStar extends HttpServlet {
             
             // Declare our statement
             Statement statement = dbcon.createStatement();
-            String query = "select name, birthYear, GROUP_CONCAT(distinct title) as mtitle from stars s, stars_in_movies t, movies m where m.id = t.movieId and t.starId = s.id and name =\"";
+            String query = "select name, birthYear, GROUP_CONCAT(distinct title SEPARATOR '----') as mtitle from stars s, stars_in_movies t, movies m where m.id = t.movieId and t.starId = s.id and name =\"";
             query += starName;
             query += "\" GROUP BY s.id;";
             System.out.println(query);
