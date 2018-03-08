@@ -98,7 +98,7 @@ public class LoginActivity extends ActionBarActivity{
         email = username.getText().toString();
         password = user_password.getText().toString();
 
-        String url = "http://192.168.0.9:8080/project4/AndroidLogin?username="+email+"&password="+password;
+        String url = "http://18.144.25.253:8080/project4/AndroidLogin?username="+email+"&password="+password;
 
         Log.d("url", url);
         StringRequest postRequest = new StringRequest(Request.Method.GET, url,
