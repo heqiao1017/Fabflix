@@ -2,16 +2,20 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.regex.Pattern;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -46,9 +50,9 @@ public class Search extends HttpServlet {
 		
 		String full_text_query = request.getParameter("query");
 		
-		String loginUser = "mytestuser";
-        String loginPasswd = "mypassword";
-        String loginUrl = "jdbc:mysql://localhost:3306/moviedb?useSSL=false";
+//		String loginUser = "mytestuser";
+//        String loginPasswd = "mypassword";
+//        String loginUrl = "jdbc:mysql://localhost:3306/moviedb?useSSL=false";
 
         response.setContentType("application/json");
 
@@ -56,26 +60,65 @@ public class Search extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-            Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
-            
+//            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+//            Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
+            //*******************************************************
+            // the following few lines are for connection pooling
+            // Obtain our environment naming context
+	
+	        Context initCtx = new InitialContext();
+	        if (initCtx == null)
+	            out.println("initCtx is NULL");
+	
+	        Context envCtx = (Context) initCtx.lookup("java:comp/env");
+	        if (envCtx == null)
+	            out.println("envCtx is NULL");
+
+	        // Look up our data source
+	        DataSource ds = (DataSource) envCtx.lookup("jdbc/TestDB");
+	
+	        // the following commented lines are direct connections without pooling
+	        //Class.forName("org.gjt.mm.mysql.Driver");
+	        //Class.forName("com.mysql.jdbc.Driver").newInstance();
+	        //Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
+	
+	        if (ds == null)
+	            out.println("ds is null.");
+	
+	        Connection dbcon = ds.getConnection();
+	        if (dbcon == null)
+	            out.println("dbcon is null.");
+	        //*******************************************************
             
             // Declare our statement
             Statement statement = dbcon.createStatement();
+            
+            PreparedStatement updateSearchQuery = null;
+            
             String query = "SELECT m.id as ID, title, year, director, "
             		+ "GROUP_CONCAT(DISTINCT g.name) AS genres, GROUP_CONCAT(DISTINCT s.name) AS stars "
             		+ "FROM stars s, stars_in_movies t, genres g, genres_in_movies e, movies m "
             		+ "WHERE m.id = t.movieId AND t.starId = s.id AND m.id = e.movieId AND e.genreId = g.id ";
-            if (full_text_query != null) {
-            		String[] splitStrs = full_text_query.trim().split("\\s+");
+            
+            String searchQuery = "SELECT m.id as ID, title, year, director, "
+            		+ "GROUP_CONCAT(DISTINCT g.name) AS genres, GROUP_CONCAT(DISTINCT s.name) AS stars "
+            		+ "FROM stars s, stars_in_movies t, genres g, genres_in_movies e, movies m "
+            		+"INNER JOIN (select id from movies where match (title) against ('?' IN BOOLEAN MODE)?"
+            		+ ") as k on k.id = m.id WHERE m.id = t.movieId AND t.starId = s.id AND m.id = e.movieId AND e.genreId = g.id GROUP BY m.id";
+            //More user-friendly full text search query
+            if (full_text_query != null) { 		
             		//query = "SELECT id FROM movies WHERE MATCH (title) AGAINST ('+grad* +E*' IN BOOLEAN MODE);";
             		query = "SELECT m.id as ID, title, year, director, "
                     		+ "GROUP_CONCAT(DISTINCT g.name) AS genres, GROUP_CONCAT(DISTINCT s.name) AS stars "
                     		+ "FROM stars s, stars_in_movies t, genres g, genres_in_movies e, movies m "
                     		+"INNER JOIN (select id from movies where match (title) against ('";//+"')) as k ON k.id = m.id";
+            		
+            		String[] splitStrs = full_text_query.trim().split("\\s+");
             		for (String splitStr : splitStrs) {
             			query += "+"+splitStr+"* ";
             		}
+            		
+            		
             		query.trim();
             		query += "' IN BOOLEAN MODE)";
             		
@@ -90,7 +133,7 @@ public class Search extends HttpServlet {
     						query += " OR edth(lower(title), '" + new_query + "', 3)";
     				}
 	    			
-            		query += ") as k on k.id = m.id WHERE m.id = t.movieId AND t.starId = s.id AND m.id = e.movieId AND e.genreId = g.id ";
+	    			query += ") as k on k.id = m.id WHERE m.id = t.movieId AND t.starId = s.id AND m.id = e.movieId AND e.genreId = g.id ";
             }
             else if (genre!=null) {
             		query = "SELECT m.id as ID, title, year, director, "
@@ -127,12 +170,46 @@ public class Search extends HttpServlet {
             }
             
 	        query += "GROUP BY m.id";
-	        
 
 	        System.out.println(query);
+	        //System.out.println("SearchQuery: "+query);
+	        
+	        ResultSet rs = null;
+	        
+	        if (full_text_query != null) 
+	        {
+	        		String fullText = null, fuzzy = null;
+		        	
+	        		String[] splitStrs = full_text_query.trim().split("\\s+");
+	        		for (String splitStr : splitStrs) {
+	        			fullText = "+"+splitStr+"* ";
+	        		}
+	        		fullText = fullText.trim();
+	        		
+	        		String new_query = full_text_query.trim().toLowerCase();
+	    			int len = new_query.length();
+	    			if (len > 5) {
+    					if (len <= 9)
+    						fuzzy = " OR edth(lower(title), '" + new_query + "', 1)";
+    					else if (len <= 15)
+    						fuzzy = " OR edth(lower(title), '" + new_query + "', 2)";
+    					else
+    						fuzzy = " OR edth(lower(title), '" + new_query + "', 3)";
+    				}
+	        		
+	        		dbcon.setAutoCommit(false);
+	        		updateSearchQuery = dbcon.prepareStatement(searchQuery);
+	        		updateSearchQuery.setString(1, fullText);
+	        		updateSearchQuery.setString(2, fuzzy);
+	        		rs = updateSearchQuery.executeQuery();
+	        		dbcon.commit();
+	        }else {
+	        		rs = statement.executeQuery(query);
+	        }
+	        
             
             // Perform the query
-            ResultSet rs = statement.executeQuery(query);
+            //ResultSet rs = statement.executeQuery(query);
             
 //            JsonObject responseJsonObject = new JsonObject();
             JsonArray jsonArray = new JsonArray();

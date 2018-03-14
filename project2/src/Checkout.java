@@ -13,12 +13,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.sql.DataSource;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -60,11 +63,46 @@ public class Checkout extends HttpServlet {
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-            Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
+//            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+//            Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
+    
+        	
+        	
+        	
+        	
+   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    		// the following few lines are for connection pooling
+        // Obtain our environment naming context
+
+        Context initCtx = new InitialContext();
+        if (initCtx == null)
+            out.println("initCtx is NULL");
+
+        Context envCtx = (Context) initCtx.lookup("java:comp/env");
+        if (envCtx == null)
+            out.println("envCtx is NULL");
+
+        // Look up our data source
+        DataSource ds = (DataSource) envCtx.lookup("jdbc/TestDB");
+
+        // the following commented lines are direct connections without pooling
+        //Class.forName("org.gjt.mm.mysql.Driver");
+        //Class.forName("com.mysql.jdbc.Driver").newInstance();
+        //Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
+
+        if (ds == null)
+            out.println("ds is null.");
+
+        Connection dbcon = ds.getConnection();
+        if (dbcon == null)
+            out.println("dbcon is null.");
+   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             
-            
-            // Declare our statement
+           
+        
+        
+        
+        // Declare our statement
             Statement statement = dbcon.createStatement();
             String query = "select * from creditcards where id ='"+creditcard+"' and firstName='"+firstname+"' and lastName ='"+lastname+"' and expiration='"+expiration+"'";
             System.out.println(query);
@@ -113,7 +151,7 @@ public class Checkout extends HttpServlet {
 	    		System.out.println("saleDate:"+saleDate);
 	    		
 
-	    		String movie_query,movie_id = null,sale_query;
+	    		String movie_query, movie_id = null, sale_query;
 	    		jsonArray = new JsonArray();
 	    		
     			HashMap<String, Integer> previousItems = (HashMap<String,Integer>)session.getAttribute("previousItems");
@@ -126,9 +164,30 @@ public class Checkout extends HttpServlet {
     						movie_id = rs.getString("id");//movie id
     					}
     					System.out.println("movie_id:"+movie_id);
+    					
+    				
+    					
+    				//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    					// Look up our data source
+    			        DataSource ds_write = (DataSource) envCtx.lookup("jdbc/WriteDB");
+    			        if (ds_write == null)
+    			            out.println("ds_write is null.");
+    			        Connection dbcon_write = ds.getConnection();
+    			        if (dbcon_write == null)
+    			            out.println("dbcon_write is null.");
+    			        
+    			        Statement write_statement = dbcon_write.createStatement();
+    			        
+    			        
     					sale_query = "INSERT INTO sales VALUES(default,"+customerId+",'"+movie_id+"'"+",'"+saleDate+"');";
     					System.out.println("sale_query:"+sale_query);
-    					statement.executeUpdate(sale_query);
+    					
+    					//statement.executeUpdate(sale_query);
+    					write_statement.executeUpdate(sale_query);
+    				//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    					
+    					
+    					
     					transaction_id++;
     					//send sales table as json object back: sales_id, customer id, cusomer email, movieid, movies, salesdate;
 	    	    			

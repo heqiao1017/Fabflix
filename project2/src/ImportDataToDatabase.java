@@ -14,6 +14,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 public class ImportDataToDatabase {
 	//following are all data from the database
 	public static Map<String, Movie> movieHash = new HashMap<>();//key: title id
@@ -55,7 +60,7 @@ public class ImportDataToDatabase {
 	
 	
 	
-	public static void main(String[] args) throws InstantiationException, IllegalAccessException, ClassNotFoundException, FileNotFoundException {
+	public static void main(String[] args) throws InstantiationException, IllegalAccessException, ClassNotFoundException, FileNotFoundException, NamingException {
 //		PrintStream fileStream = new PrintStream("output.txt");
 //		System.setOut(fileStream);
 		MainParser mp = new MainParser();
@@ -72,9 +77,40 @@ public class ImportDataToDatabase {
 		Connection conn = null;
 
         try {
-        		Class.forName("com.mysql.jdbc.Driver").newInstance();
-            String jdbcURL="jdbc:mysql://localhost:3306/moviedb";
-            conn = DriverManager.getConnection(jdbcURL,"mytestuser", "mypassword");
+//        		Class.forName("com.mysql.jdbc.Driver").newInstance();
+//            String jdbcURL="jdbc:mysql://localhost:3306/moviedb";
+//            conn = DriverManager.getConnection(jdbcURL,"mytestuser", "mypassword");
+            
+        	//*******************************************************
+    		// the following few lines are for connection pooling
+        // Obtain our environment naming context
+
+	        Context initCtx = new InitialContext();
+	        if (initCtx == null)
+	            System.out.println("initCtx is NULL");
+	
+	        Context envCtx = (Context) initCtx.lookup("java:comp/env");
+	        if (envCtx == null)
+	        		System.out.println("envCtx is NULL");
+	
+	        // Look up our data source
+	        DataSource ds = (DataSource) envCtx.lookup("jdbc/TestDB");
+	
+	        // the following commented lines are direct connections without pooling
+	        //Class.forName("org.gjt.mm.mysql.Driver");
+	        //Class.forName("com.mysql.jdbc.Driver").newInstance();
+	        //Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
+	
+	        if (ds == null)
+	        		System.out.println("ds is null.");
+	
+	        Connection dbcon = ds.getConnection();
+	        if (dbcon == null)
+	        		System.out.println("dbcon is null.");
+	        //*******************************************************
+            
+            
+            
             Statement statement = conn.createStatement();
             
             //query movies table to get all the movies in the database
