@@ -124,3 +124,16 @@ Yes, they are on the current directory with README.md, UCI-Chenli-teaching/cs122
 
 
 ![Alt text](https://github.com/UCI-Chenli-teaching/cs122b-winter18-team-19/blob/master/logFiles.png)
+
+
+## Note:
+### The following is where in ```Search.java``` I modified to calculate the time for TS and TJ
+![Alt text](https://github.com/UCI-Chenli-teaching/cs122b-winter18-team-19/blob/master/time1.png)
+![Alt text](https://github.com/UCI-Chenli-teaching/cs122b-winter18-team-19/blob/master/time2.png)
+![Alt text](https://github.com/UCI-Chenli-teaching/cs122b-winter18-team-19/blob/master/time3.png)
+![Alt text](https://github.com/UCI-Chenli-teaching/cs122b-winter18-team-19/blob/master/time4.png)
+
+### I actually wrote a filter (https://github.com/UCI-Chenli-teaching/cs122b-winter18-team-19/blob/master/project2/src/TimingFilter.java) to timing the response time of the TS, but I did not have much time left to parse the TS from the tomcat log, so I kept using the TS I calculated inside the Search servlet
+
+### If no connection pooling, need to uncomment the line 73-74 for ```Search.java```, and comment the line through 78-99
+### If no prepare statement, need to uncomment the line 230 for ```Search.java```, and comment the line through 188-226
