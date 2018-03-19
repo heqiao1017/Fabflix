@@ -137,3 +137,4 @@ Yes, they are on the current directory with README.md, UCI-Chenli-teaching/cs122
 
 ### If no connection pooling, need to uncomment the line 73-74 for ```Search.java```, and comment the line through 78-99
 ### If no prepare statement, need to uncomment the line 230 for ```Search.java```, and comment the line through 188-226
+### I did not include the https configuration in web.xml, and I get rid of the reCaptcha for the purpose of tesing on Jmeter
