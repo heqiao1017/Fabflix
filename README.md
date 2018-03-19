@@ -13,7 +13,15 @@ cs122b-winter18-team-19/project2/WebContent/META-INF/context.xml
 
 
 ### Snapshots
+
+#### context.xml
 ![Alt text](https://github.com/UCI-Chenli-teaching/cs122b-winter18-team-19/blob/master/context.png)
+
+#### web.xml
+![Alt text](https://github.com/UCI-Chenli-teaching/cs122b-winter18-team-19/blob/master/webXml.png)
+
+#### all java servlets
+![Alt text](https://github.com/UCI-Chenli-teaching/cs122b-winter18-team-19/blob/master/pooling.png)
 
 ### How did you use Prepared Statements?
 
