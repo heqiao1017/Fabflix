@@ -79,7 +79,7 @@ public class DashboardActivity extends HttpServlet {
         try {
 //        		Class.forName("com.mysql.jdbc.Driver").newInstance();
 //            Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
-        	//*******************************************************
+//*******************************************************
     		// the following few lines are for connection pooling
         // Obtain our environment naming context
 
@@ -105,7 +105,7 @@ public class DashboardActivity extends HttpServlet {
         Connection dbcon = ds.getConnection();
         if (dbcon == null)
             out.println("dbcon is null.");
-        //*******************************************************
+//*******************************************************
             
             
             
@@ -121,9 +121,15 @@ public class DashboardActivity extends HttpServlet {
 			if (!exist) 
 			{
 				//create the maxId table
+				
+				//--->
+				dbcon.setReadOnly(false);
 				query = "create table maxId (movieMaxId INTEGER, starMaxId INTEGER);";
 				System.out.println(query);
-				int rs_create = statement.executeUpdate(query);
+				int rs_create = dbcon.createStatement().executeUpdate(query);
+				dbcon.setReadOnly(true);
+				//<---
+				
 				
 				//get max star count
 				query = "select max(id) from stars;";
@@ -148,9 +154,15 @@ public class DashboardActivity extends HttpServlet {
 				System.out.println("movieMaxCount: "+movieMaxCount);
 				
 				//store the max count into maxId table
+				
+				//--->
+				dbcon.setReadOnly(false);
 				query = "insert into maxId values("+ movieMaxCount + "," + starMaxCount+");";
 				System.out.println(query);
-				rs_create = statement.executeUpdate(query);
+				rs_create = dbcon.createStatement().executeUpdate(query);
+				dbcon.setReadOnly(true);
+				//<---
+				
 				if (rs_create == 1) {
 					System.out.println("store the max count into maxId table success");
 				}
@@ -177,8 +189,15 @@ public class DashboardActivity extends HttpServlet {
             				maxStarId = rs.getInt("starMaxId") + 1;
             			
             			//update the maxStarId in maxId table
+            			
+            			//--->
+        				dbcon.setReadOnly(false);
             			query = "update maxId set starMaxId = "+maxStarId;
-            			int rs_update = statement.executeUpdate(query);
+            			int rs_update = dbcon.createStatement().executeUpdate(query);
+            			dbcon.setReadOnly(true);
+        				//<---
+            			
+            			
             			if (rs_update == 1) {
             				System.out.println("rs_update, success: " + maxStarId);
             			}
@@ -193,7 +212,14 @@ public class DashboardActivity extends HttpServlet {
             			}
             			query +=");";
             			System.out.println(query);
-            			int rs_star = statement.executeUpdate(query);
+            			
+            			//--->
+        				dbcon.setReadOnly(false);
+            			int rs_star = dbcon.createStatement().executeUpdate(query);
+            			dbcon.setReadOnly(true);
+        				//<---
+            			
+            			
             			if (rs_star == 1) {
                     		responseJsonObject.addProperty("message", "Insert Successful");
                     }
@@ -231,6 +257,11 @@ public class DashboardActivity extends HttpServlet {
             }
             else {
             		System.out.println("before call procedure");
+            		
+            		//--->
+    				dbcon.setReadOnly(false);
+    				//<---
+            		
             		CallableStatement stmt = dbcon.prepareCall("{call add_movie(?,?,?,?,?,?,?)}");
             		stmt.setString(1,title);
             		int movieYearInt = (movieYear.equals("")? 0: Integer.parseInt(movieYear));
@@ -241,7 +272,14 @@ public class DashboardActivity extends HttpServlet {
             		stmt.setInt(5,starBirthYear);
             		stmt.setString(6,genre);
             		stmt.registerOutParameter(7, java.sql.Types.VARCHAR);
+            		
+
             		stmt.execute();
+
+            		//--->
+            		dbcon.setReadOnly(true);
+    				//<---
+            		
             		responseJsonObject.addProperty("message",stmt.getString(7));
         	        System.out.println(stmt.getString(7));
         	        out.write(responseJsonObject.toString());

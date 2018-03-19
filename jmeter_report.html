@@ -1,0 +1,114 @@
+ <!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+    background-color: linen;
+}
+
+td {
+    border-top-style: solid;
+}
+</style>
+</head>
+<body>
+
+<table style="width:100%">
+  <tr style="font-weight:bold; background-color: orange">
+    <td width="300px">Single-instance version cases</td>
+    <td>Graph Results Screenshot</td>
+    <td>Average Query Time(ms)</td>
+    <td>Average Search Servlet Time(ms)</td>
+    <td>Average JDBC Time(ms)</td>
+    <td>Analysis</td>
+  </tr>
+  <tr>
+    <td>Case 1: HTTP/1 thread</td>
+    <td><img src="http_single_thread_1.png" alt="Graph Results Screenshot Case 1" style="width:304px;height:228px;"></td>
+    <td>27ms</td>
+    <td>12556325.6067ns</td>
+    <td>12301666.1113ns</td>
+    <td>Total 2642 * 2 requests (both Login and Search servlets but only count the response time for Search), so comparing to HTTP/10 threads, the Tq, TS, TJ is around 10 times smaller</td>
+  </tr>
+  <tr>
+    <td>Case 2: HTTP/10 threads</td>
+    <td><img src="http_single_thread_10.png" alt="Graph Results Screenshot Case 2" style="width:304px;height:228px;"></td>
+    <td>68ms</td>
+    <td>91236024.5668ns</td>
+    <td>90458297.8414ns</td>
+    <td>Total 2642 * 10 * 2 requests (both Login and Search servlets but only count the response time for Search), so comparing to HTTP/1 threads, the Tq, TS, TJ is around 10 times bigger</td>
+  </tr>
+  <tr>
+    <td>Case 3: HTTPS/10 threads</td>
+    <td><img src="https_single_10.png" alt="Graph Results Screenshot Case 3" style="width:304px;height:228px;"></td>
+    <td>89ms</td>
+    <td>74437243.332ns</td>
+    <td>73491666.1841ns</td>
+    <td>Comparing to HTTP/10 threads, it takes less time maybe because https is more secure</td>
+  </tr>
+  <tr>
+    <td>Case 4: HTTP/10 threads/No prepared statements</td>
+    <td><img src="http_single_no_prepare.png" alt="Graph Results Screenshot Case 4" style="width:304px;height:228px;"></td>
+    <td>60ms</td>
+    <td>74271855.9613ns</td>
+    <td>74271855.9613ns</td>
+    <td>I am not sure here why without the prepare statement, it takes less time than having both prepare and pooling, maybe it is bacause prepare statement is not working very well with connection pooling</td>
+  </tr>
+  <tr>
+    <td>Case 5: HTTP/10 threads/No connection pooling</td>
+    <td><img src="http_single_no_pool.png" alt="Graph Results Screenshot Case 4" style="width:304px;height:228px;"></td>
+    <td>78ms</td>
+    <td>105053325.21ns</td>
+    <td>104179896.632ns</td>
+    <td>In this case, no connection pooling taking more time than with connection pooling, so proves that conneciton pooling really save some time when there are many requests</td>
+  </tr>
+
+</table> 
+
+
+<table style="width:100%">
+  <tr style="font-weight:bold; background-color: orange">
+    <td width="300px">Scaled version cases</td>
+    <td>Graph Results Screenshot</td>
+    <td>Average Query Time(ms)</td>
+    <td>Average Search Servlet Time(ms)</td>
+    <td>Average JDBC Time(ms)</td>
+    <td>Analysis</td>
+  </tr>
+  <tr>
+    <td>Case 1: HTTP/1 thread</td>
+    <td><img src="http_scale_1.png" alt="Graph Results Screenshot Case 1" style="width:304px;height:228px;"></td>
+    <td>29ms</td>
+    <td>13580061.33535ns</td>
+    <td>13043554.39895ns</td>
+    <td>Total 2642 * 2 requests (both Login and Search servlets but only count the response time for Search), so comparing to HTTP/10 threads, the Tq, TS, TJ is smaller than the HTTP/10 threads</td>
+  </tr>
+  <tr>
+    <td>Case 2: HTTP/10 threads</td>
+    <td><img src="http_scale_10.png" alt="Graph Results Screenshot Case 2" style="width:304px;height:228px;"></td>
+    <td>70ms</td>
+    <td>90595092.9622ns</td>
+    <td>88838643.28155ns</td>
+    <td>Total 2642 * 2 requests (both Login and Search servlets but only count the response time for Search), so comparing to HTTP/1 threads, the Tq, TS, TJ is bigger than the HTTP/1 threads, but maybe because of the scaled http of two instances with load banlancer, 10 thread is less 10 times of 1 thread</td>
+  </tr>
+  <tr>
+    <td>Case 3: HTTP/10 threads/No prepared statements</td>
+    <td><img src="http_scale_no_pooling.png" alt="Graph Results Screenshot Case 4" style="width:304px;height:228px;"></td>
+    <td>59ms</td>
+    <td>69690739.8527ns</td>
+    <td>70444757.6583ns</td>
+    <td>Only with connection pooling seems better than having both connection pooling and prepare statemnt, which I am not sure why, it supposed to be taking more time with only connection pooling, maybe it is just because prepare statement is not working very well with connection pooling</td>
+  </tr>
+  <tr>
+    <td>Case 4: HTTP/10 threads/No connection pooling</td>
+    <td><img src="http_scale_no_prepare.png" alt="Graph Results Screenshot Case 4" style="width:304px;height:228px;"></td>
+    <td>49ms</td>
+    <td>47159737.14645ns</td>
+    <td>46424765.18265ns</td>
+    <td>In this scaled case, with only prepare statement looks better than having both connection pooling and prepare statemnt, I am not sure why this happens as well, connection pooling will help with not wasting time creating connections and closing connections</td>
+  </tr>
+
+</table> 
+
+</body>
+</html>

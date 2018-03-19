@@ -24,21 +24,6 @@
 	</res-type>
     <res-auth>Container</res-auth>
   </resource-ref>
-  <resource-ref>
-    <description>
-		Resource reference to a factory for java.sql.Connection
-		instances that may be used for talking to a particular
-		database that
-		is configured in the server.xml file.
-	</description>
-    <res-ref-name>
-		jdbc/WriteDB
-	</res-ref-name>
-    <res-type>
-		javax.sql.DataSource
-	</res-type>
-    <res-auth>Container</res-auth>
-  </resource-ref>
   <filter>
     <filter-name>LoginFilter</filter-name>
     <filter-class>LoginFilter</filter-class>
@@ -47,5 +32,13 @@
     <filter-name>LoginFilter</filter-name>
     <url-pattern>/*</url-pattern>
     <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
+  <filter>
+    <filter-name>TimingFilter</filter-name>
+    <filter-class>TimingFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>TimingFilter</filter-name>
+    <url-pattern>/Search</url-pattern>
   </filter-mapping>
 </web-app>

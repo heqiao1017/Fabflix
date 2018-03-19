@@ -61,13 +61,13 @@ public class Login extends HttpServlet {
 //        String loginUrl = "jdbc:mysql://localhost:3306/moviedb?useSSL=false";
         
         response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
         
-        String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+        /*String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
 		System.out.println("gRecaptchaResponse=" + gRecaptchaResponse);
 		boolean valid = VerifyUtils.verify(gRecaptchaResponse);
 		
 		
-		PrintWriter out = response.getWriter();
 		 
 		if (!valid) {
 			JsonObject responseJsonObject = new JsonObject();
@@ -75,7 +75,7 @@ public class Login extends HttpServlet {
 			responseJsonObject.addProperty("message", "Recaptcha WRONG!!!!!");
 			out.write(responseJsonObject.toString());	
 			return;
-		}
+		}*/
 
 
         try {

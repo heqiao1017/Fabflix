@@ -1,15 +1,7 @@
-<Context>
+<?xml version="1.0" encoding="UTF-8"?>
+<Context reloadable="true" debug="true" allowLinking="true">
 	<Resource name="jdbc/TestDB" auth="Container" type="javax.sql.DataSource"
 		maxTotal="100" maxIdle="30" maxWaitMillis="10000" username="mytestuser"
 		password="mypassword" driverClassName="com.mysql.jdbc.Driver"
-		url="jdbc:mysql://localhost:3306/moviedb?autoReconnect=true&amp;useSSL=false&amp;cachePrepStmts=true" />
-	<!-- <Resource name="jdbc/TestDB" auth="Container" type="javax.sql.DataSource"
-		maxTotal="100" maxIdle="30" maxWaitMillis="10000" username="mytestuser"
-		password="mypassword" driverClassName="com.mysql.jdbc.Driver"
-		url="jdbc:mysql://172.31.21.153:3306/moviedb?autoReconnect=true&amp;useSSL=false&amp;cachePrepStmts=true" /> -->
-	
-	<Resource name="jdbc/WriteDB" auth="Container" type="javax.sql.DataSource"
-		maxTotal="100" maxIdle="30" maxWaitMillis="10000" username="mytestuser"
-		password="mypassword" driverClassName="com.mysql.jdbc.Driver"
-		url="jdbc:mysql://172.31.21.153:3306/moviedb?autoReconnect =true&amp;useSSL=false&amp;cachePrepStmts=true" />
+		url="jdbc:mysql://172.31.21.153:3306, 172.31.29.115:3306/moviedb?autoReconnect=true&amp;useSSL=false&amp;cachePrepStmts=true" />
 </Context>

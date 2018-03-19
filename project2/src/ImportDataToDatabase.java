@@ -74,7 +74,7 @@ public class ImportDataToDatabase {
 		actorNames = cp.getActors();
 		
 		
-		Connection conn = null;
+		//Connection conn = null;
 
         try {
 //        		Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -104,8 +104,8 @@ public class ImportDataToDatabase {
 	        if (ds == null)
 	        		System.out.println("ds is null.");
 	
-	        Connection dbcon = ds.getConnection();
-	        if (dbcon == null)
+	        Connection conn = ds.getConnection();
+	        if (conn == null)
 	        		System.out.println("dbcon is null.");
 	        //*******************************************************
             
@@ -206,6 +206,9 @@ public class ImportDataToDatabase {
 //	    		PrintStream fileStream = new PrintStream("output.txt");
 //	    		System.setOut(fileStream);
             //------------------------>from here, using bash insert to insert all the parsed data into the database
+            
+            conn.setReadOnly(false);
+            
             conn.setAutoCommit(false);
             
             PreparedStatement psInsertRecord=null;
@@ -533,6 +536,7 @@ public class ImportDataToDatabase {
 //	    		iNoRows=psInsertRecord.executeBatch();
 	    		
 	    		conn.commit();
+	    		conn.setReadOnly(true);
 	    		if(psInsertRecord!=null) psInsertRecord.close();
 	        if(conn!=null) conn.close();
             

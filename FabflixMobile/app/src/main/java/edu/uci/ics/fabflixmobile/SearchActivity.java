@@ -91,7 +91,7 @@ public class SearchActivity extends ActionBarActivity {
         }
         else {
 
-            String url = "http://18.144.25.253:8080/project4/Search?query=" + movie_query;
+            String url = "http://54.183.216.2:8080/project4/Search?query=" + movie_query;
 
             Log.d("url", url);
             StringRequest postRequest = new StringRequest(Request.Method.GET, url,

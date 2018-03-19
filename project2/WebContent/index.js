@@ -19,8 +19,7 @@ $("#browsebytitle").click(function(){
  */
 
 //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map
-var movieMap = new Map();
-var starMap = new Map();
+
 var map = new Map();
 
 
@@ -37,16 +36,16 @@ function handleLookup(query, doneCallback) {
 	// TODO: if you want to check past query results first, you can do it here
 	var pure_query = query.trim().toLowerCase();
 	var query_cached = false;
-	//var data;
+	var value;
 	console.log("---->check past query results first");
-	for (var [key, value] of map.entries()) {
-		if (key.startsWith(pure_query)) {
+	//for (var [key, value] of map.entries()) {
+		if (map.has(pure_query)) {
 			query_cached = true;
+			value = map.get(pure_query);
 			console.log("=>from cahce suggestion list: \n"+JSON.stringify(value));//suggestion list
 			doneCallback({suggestions: value});
-			break;
 		}
-	}
+	//}
 	
 	if (!query_cached) {
 		console.log("--->sending AJAX request to backend Java Servlet")
@@ -216,7 +215,6 @@ function handleNormalSearch(query) {
 	if (query !== "") {
 		jQuery.ajax({
 			"method": "GET",
-			"dataType": "json",
 			"url": "/project2/Search?query=" + escape(query),
 			"success": (resultData) => saveToLocalStorage(resultData),
 			"error": function(errorData) {

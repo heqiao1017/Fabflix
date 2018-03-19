@@ -169,23 +169,27 @@ public class Checkout extends HttpServlet {
     					
     				//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     					// Look up our data source
-    			        DataSource ds_write = (DataSource) envCtx.lookup("jdbc/WriteDB");
+    			        /*DataSource ds_write = (DataSource) envCtx.lookup("jdbc/WriteDB");
     			        if (ds_write == null)
     			            out.println("ds_write is null.");
     			        Connection dbcon_write = ds.getConnection();
     			        if (dbcon_write == null)
     			            out.println("dbcon_write is null.");
     			        
-    			        Statement write_statement = dbcon_write.createStatement();
+    			        Statement write_statement = dbcon_write.createStatement();*/
     			        
-    			        
+    			     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     					sale_query = "INSERT INTO sales VALUES(default,"+customerId+",'"+movie_id+"'"+",'"+saleDate+"');";
     					System.out.println("sale_query:"+sale_query);
     					
-    					//statement.executeUpdate(sale_query);
-    					write_statement.executeUpdate(sale_query);
-    				//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     					
+    					//write_statement.executeUpdate(sale_query);
+    					//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    					dbcon.setReadOnly(false);
+    					dbcon.createStatement().executeUpdate(sale_query);
+    					dbcon.setReadOnly(true);
+    					//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    					//statement.executeUpdate(sale_query);
     					
     					
     					transaction_id++;
