@@ -13,7 +13,7 @@ cs122b-winter18-team-19/project2/WebContent/META-INF/context.xml
 
 
 ### Snapshots
-![Alt text](https://github.com/UCI-Chenli-teaching/cs122b-winter18-team-19/context.png?raw=true "Optional Title")
+![Alt text](https://github.com/UCI-Chenli-teaching/cs122b-winter18-team-19/context.png)
 
 ### How did you use Prepared Statements?
 
