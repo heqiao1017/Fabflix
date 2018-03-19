@@ -1,15 +1,19 @@
-Task 1
-
-How did you use connection pooling?
+Note: All my fabflix codes are in project2, and all the log files, parsing script and HTML report, war file are shown on current folder.
 
 
+# Task 1
+
+## How did you use connection pooling?
+I used connection pooling in all servlets, and I modified context.xml and web.xml
 
 
 File name, line numbers as in Github
+cs122b-winter18-team-19/project2/WebContent/META-INF/context.xml
+
 
 
 Snapshots
-
+![Alt text](cs122b-winter18-team-19/context.png?raw=true "Optional Title")
 
 How did you use Prepared Statements?
 
